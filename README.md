@@ -509,6 +509,8 @@ cat > ~/private.yml << EOF
 product-slug: ${PRODUCT_SLUG}
 config-uri: ${GITHUB_PUBLIC_REPO}
 s3-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
+aws-access-key-id: ${PCF_INSTALLER_ACCESS_KEY}
+aws-secret-access-key: ${PCF_INSTALLER_ACCESS_SECRET}
 region: ${PCF_REGION}
 pivnet-token: ${PIVNET_UAA_REFRESH_TOKEN}
 credhub-ca-cert: |
