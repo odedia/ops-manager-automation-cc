@@ -441,8 +441,8 @@ Make sure you are in the right directory.
 
 ```bash
 cd ~/terraforming/terraforming-pas
-ln -s ~/terraform.tfvars .
 echo "PCF_INSTALLATION_KIND=pas" >> ~/.env
+echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 ```
 
@@ -453,8 +453,8 @@ source ~/.env
 
 ```bash
 cd ~/terraforming/terraforming-pks
-ln -s ~/terraform.tfvars .
 echo "PCF_INSTALLATION_KIND=pks" >> ~/.env
+echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 
 ```
@@ -508,6 +508,7 @@ config-uri: ${GITHUB_PUBLIC_REPO}
 aws-access-key-id: ${PCF_INSTALLER_ACCESS_KEY}
 aws-secret-access-key: ${PCF_INSTALLER_ACCESS_SECRET}
 s3-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
+region: ${PCF_REGION}
 pivnet-token: ${PIVNET_UAA_REFRESH_TOKEN}
 credhub-ca-cert: |
 $(echo $CREDHUB_CA_CERT | sed 's/- /-\n/g; s/ -/\n-/g' | sed '/CERTIFICATE/! s/ /\n/g' | sed 's/^/  /')
