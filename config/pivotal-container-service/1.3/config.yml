@@ -2,11 +2,11 @@
 product-name: pivotal-container-service
 network-properties:
   singleton_availability_zone:
-    name: us-central1-a
+    name: ((az1))
   other_availability_zones:
-  - name: us-central1-a
-  - name: us-central1-b
-  - name: us-central1-c
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
   network:
     name: pks
   service_network:
@@ -20,14 +20,14 @@ product-properties:
     value: api.pks.((subdomain-name)).((domain-name))
   .properties.plan1_selector.active.master_az_placement:
     value:
-    - us-central1-a
-    - us-central1-b
-    - us-central1-c
+    - ((az1))
+    - ((az2))
+    - ((az3))
   .properties.plan1_selector.active.worker_az_placement:
     value:
-    - us-central1-a
-    - us-central1-b
-    - us-central1-c
+    - ((az1))
+    - ((az2))
+    - ((az3))
   .properties.plan1_selector.active.worker_instances:
     value: 1
   .properties.plan2_selector:
@@ -35,15 +35,11 @@ product-properties:
   .properties.plan3_selector:
     value: Plan Inactive
   .properties.cloud_provider:
-    value: GCP
-  .properties.cloud_provider.gcp.project_id:
-    value: ((gcp-project-id))
-  .properties.cloud_provider.gcp.network:
-    value: ((subdomain-name))-pcf-network
-  .properties.cloud_provider.gcp.master_service_account:
-    value: ((subdomain-name))-pks-master@((gcp-project-id)).iam.gserviceaccount.com
-  .properties.cloud_provider.gcp.worker_service_account:
-    value: ((subdomain-name))-pks-worker@((gcp-project-id)).iam.gserviceaccount.com
+    value: AWS
+  .properties.cloud_provider.aws.pks_master_iam_instance_profile_name:
+    value: ((pks_master_iam_instance_profile_name))
+  .properties.cloud_provider.aws.pks_worker_iam_instance_profile_name:
+    value: ((pks_worker_iam_instance_profile_name))
   .properties.vm_extensions:
     value:
     - public_ip

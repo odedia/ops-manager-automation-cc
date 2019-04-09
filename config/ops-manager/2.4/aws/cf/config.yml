@@ -1,0 +1,59 @@
+---
+az-configuration:
+- name: us-central1-a
+- name: us-central1-b
+- name: us-central1-c
+network-assignment:
+  network:
+    name: infrastructure
+  singleton_availability_zone:
+    name: us-central1-a
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: infrastructure
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-infrastructure-subnet/us-central1
+      cidr: 10.0.0.0/26
+      dns: 169.254.169.254
+      gateway: 10.0.0.1
+      reserved_ip_ranges: 10.0.0.1-10.0.0.9
+      availability_zone_names:
+      - us-central1-a
+      - us-central1-b
+      - us-central1-c
+  - name: pas
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pas-subnet/us-central1
+      cidr: 10.0.4.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.4.1
+      reserved_ip_ranges: 10.0.4.1-10.0.4.9
+      availability_zone_names:
+      - us-central1-a
+      - us-central1-b
+      - us-central1-c
+  - name: services
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-services-subnet/us-central1
+      cidr: 10.0.8.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.8.1
+      reserved_ip_ranges: 10.0.8.1-10.0.8.9
+      availability_zone_names:
+      - us-central1-a
+      - us-central1-b
+      - us-central1-c
+properties-configuration:
+  director_configuration:
+    ntp_servers_string: metadata.google.internal
+    post_deploy_enabled: true
+    resurrector_enabled: true
+    retry_bosh_deploys: true
+  iaas_configuration:
+    project: ((gcp-project-id))
+    default_deployment_tag: ((subdomain-name))
+    auth_json: ((gcp-credentials))
+resource-configuration:
+  compilation:
+    instances: 8

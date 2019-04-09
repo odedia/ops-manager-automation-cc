@@ -1,11 +1,11 @@
 product-name: cf
 network-properties:
   singleton_availability_zone:
-    name: us-central1-a
+    name: eu-west-2
   other_availability_zones:
-  - name: us-central1-a
-  - name: us-central1-b
-  - name: us-central1-c
+  - name: eu-west-2a
+  - name: eu-west-2b
+  - name: eu-west-2c
   network:
     name: pas
 product-properties:
@@ -36,10 +36,10 @@ product-properties:
         secret: ((om-password))
       primary: true
   .mysql_monitor.recipient_email:
-    value: fbloggs@gmail.com
+    value: anything@pivotal.io
 errand-config:
   deploy-autoscaler:
-    post-deploy-state: false
+    post-deploy-state: true
   deploy-notifications:
     post-deploy-state: false
   deploy-notifications-ui:
@@ -47,7 +47,7 @@ errand-config:
   nfsbrokerpush:
     post-deploy-state: false
   test-autoscaling:
-    post-deploy-state: false
+    post-deploy-state: true
 resource-config:
   compute:
     instances: 3

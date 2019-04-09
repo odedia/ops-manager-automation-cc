@@ -1,0 +1,14 @@
+---
+opsman-configuration:
+  aws:
+    access_key_id: ((aws-access-key-id))
+    secret_access_key: ((aws-secret-access-key))
+    region: eu-west-2
+    vm_name: ops-manager-vm                           # default: OpsManager-vm
+    boot_disk_size: 150                               # default 200
+    security_group_id: ((vms_security_group_id))
+    key_pair_name: ((ops_manager_ssh_public_key_name))
+    instance_type: m5.large
+    # At least one IP address (public or private) needs to be assigned to the VM.
+    public_ip: ((opsman-public-ip))
+

@@ -1,6 +1,5 @@
 ---
 pivnet-api-token: ((pivnet-api-token))
-pivnet-file-glob: srt-*.pivotal
-pivnet-product-slug: cf
+pivnet-product-slug: ops-manager
 product-version-regex: 2\.4\.(.*)
-stemcell-iaas: aws
+pivnet-file-glob: OpsManager*onAWS.yml
