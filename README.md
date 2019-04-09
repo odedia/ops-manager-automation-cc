@@ -47,10 +47,6 @@ gcloud compute ssh ubuntu@jbox-aws-cc \
   --zone "europe-west2-c"
 ```
   
-```bash
-gcloud auth login --quiet
-```
-
 All following commands should be executed from the jumpbox unless otherwsie instructed.
 
 ## Prepare your environment file
@@ -97,7 +93,7 @@ sudo apt install --yes python3-pip && \
 sudo apt install --yes awscli
 ```
 
-Configure your accese to AWS:
+Configure your access to AWS:
 ```bash
 aws configure
 ```
@@ -159,12 +155,6 @@ wget -O terraforming-aws.tar.gz https://github.com/pivotal-cf/terraforming-aws/r
 ```
 
 ```bash
-gcloud iam service-accounts create p-service --display-name "Pivotal Service Account"
-
-gcloud projects add-iam-policy-binding $(gcloud config get-value core/project) \
-  --member "serviceAccount:p-service@$(gcloud config get-value core/project).iam.gserviceaccount.com" \
-  --role 'roles/owner'
-
 cd ~
 
 aws iam create-user --user-name pcf-installer
@@ -173,6 +163,7 @@ PCF_INSTALLER_ACCESS_KEY=`echo $PCF_INSTALLER_RESPONSE_JSON | jq -r .AccessKey.A
 PCF_INSTALLER_ACCESS_SECRET=`echo $PCF_INSTALLER_RESPONSE_JSON | jq -r .AccessKey.SecretAccessKey`
 echo "PCF_INSTALLER_ACCESS_KEY=${PCF_INSTALLER_ACCESS_KEY}" >> ~/.env
 echo "PCF_INSTALLER_ACCESS_SECRET=${PCF_INSTALLER_ACCESS_SECRET}" >> ~/.env
+source ~/.env
 
 aws iam create-group --group-name pcf-installer-group
 aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
