@@ -1,8 +1,9 @@
 # ops-manager-automation-cc
 
 ## What is this?
+This is a fork of https://github.com/amcginlay/ops-manager-automation-cc to target AWS deployments.
 
-The following steps use [Control Tower](https://github.com/EngineerBetter/control-tower) to build a [Concourse](https://concourse-ci.org/) instance on [Google Cloud Platform](https://cloud.google.com/), then uses a combination of [GCS](https://cloud.google.com/storage/) buckets, [Credhub](https://docs.cloudfoundry.org/credhub/), a suite of [Platform Automation](http://docs.pivotal.io/platform-automation) tools and a single Concourse pipeline to deploy (and upgrade) the entire OpsMan and PCF product stack directly from the [Pivotal Network](https://network.pivotal.io).
+The following steps use [Control Tower](https://github.com/EngineerBetter/control-tower) to build a [Concourse](https://concourse-ci.org/) instance on [AWS](https://console.aws.amazon.com/), then uses a combination of [S3](https://console.aws.amazon.com/s3/home/) buckets, [Credhub](https://docs.cloudfoundry.org/credhub/), a suite of [Platform Automation](http://docs.pivotal.io/platform-automation) tools and a single Concourse pipeline to deploy (and upgrade) the entire OpsMan and PCF product stack directly from the [Pivotal Network](https://network.pivotal.io).
 
 The pipelines currently support [Pivotal Container Service](https://pivotal.io/platform/pivotal-container-service) and [Pivotal Application Service](https://pivotal.io/platform/pivotal-application-service) with related products.
 
@@ -13,12 +14,9 @@ I recommend forking this repository so you can:
 * Make modifications to suit your own requirements
 * Protect your active pipelines from config changes made here
 
-## Recycling GCP projects
+## Create your jumpbox from your local machine 
 
-If you wish to re-use an existing GCP project for this exercise, it is often useful to clean up any existing resources beforehand.
-For guidance, follow [these instructions](https://github.com/amcginlay/gcp-cleanup).
-
-## Create your jumpbox from your local machine or Google Cloud Shell
+Download the [AWS SHELL]https://aws.amazon.com/cli/.
 
 ```bash
 GCP_PROJECT_ID=<TARGET_GCP_PROJECT_ID>
