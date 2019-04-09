@@ -496,6 +496,9 @@ credhub set -n pks_worker_iam_instance_profile_name -t value -v "$(terraform out
 credhub set -n aws-access-key-id -t value -v "${PCF_INSTALLER_ACCESS_KEY}"
 credhub set -n aws-secret-access-key -t value -v "${PCF_INSTALLER_ACCESS_SECRET}"
 
+credhub set -n vpc_subnet_id -t value -v "$(terraform output public_subnets | sed -n 1p | sed s'/.$//')"
+credhub set -n ops_manager_iam_instance_profile_name -t value -v "$(terraform output ops_manager_iam_instance_profile_name)"
+
 ```
 Take a moment to review these settings with `credhub get -n <NAME>`.
 
