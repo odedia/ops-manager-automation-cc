@@ -2,4 +2,4 @@
 pivnet-api-token: ((pivnet-api-token))
 pivnet-product-slug: ops-manager
 product-version-regex: 2\.4\.(.*)
-pivnet-file-glob: OpsManager*onGCP.yml
+pivnet-file-glob: OpsManager*onAWS.yml

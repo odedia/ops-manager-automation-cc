@@ -50,10 +50,15 @@ properties-configuration:
     post_deploy_enabled: true
     resurrector_enabled: true
     retry_bosh_deploys: true
-  iaas_configuration:
-    project: ((gcp-project-id))
-    default_deployment_tag: ((subdomain-name))
-    auth_json: ((gcp-credentials))
+  # iaas_configuration:
+  #   encrypted: false
+  #   guid: ((properties-configuration_iaas_configuration_guid))
+  #   iam_instance_profile: ((properties-configuration_iaas_configuration_iam_instance_profile))
+  #   key_pair_name: ((properties-configuration_iaas_configuration_key_pair_name))
+  #   kms_key_arn: ((properties-configuration_iaas_configuration_kms_key_arn))
+  #   name: ((properties-configuration_iaas_configuration_name))
+  #   region: ((properties-configuration_iaas_configuration_region))
+  #   security_group: ((properties-configuration_iaas_configuration_security_group))
 resource-configuration:
   compilation:
     instances: 8
