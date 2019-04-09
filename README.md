@@ -395,7 +395,7 @@ aws s3api put-bucket-versioning --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resourc
 ## Add a dummy state file
 
 The `state.yml` file is produced by the `create-vm` platform automation task and serves as a flag to indicate that an Ops Manager exists.
-We currently store the `state.yml` file in GCS.
+We currently store the `state.yml` file in S3.
 The `install-opsman` job also consumes this file so it can short-circuit the `create-vm` task if an Ops Manager does exist.
 This is a mandatory input and does not exist by default so we create a dummy `state.yml` file to kick off proceedings.
 Storing the `state.yml` file in git may work around this edge case but, arguably, GCS/S3 is a more appropriate home.
