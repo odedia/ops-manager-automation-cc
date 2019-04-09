@@ -484,9 +484,15 @@ credhub set -n services_subnet_ids_1 -t value -v "$(terraform output services_su
 credhub set -n services_subnet_ids_2 -t value -v "$(terraform output services_subnet_ids | sed -n 2p | sed s'/.$//')"
 credhub set -n services_subnet_ids_3 -t value -v "$(terraform output services_subnet_ids | sed -n 3p)"
 credhub set -n pcf_installation_kind -t value -v "${PKS_INSTALLATION_KIND}"
+
+credhub set -n region -t value -v "$(terraform output region)"
 credhub set -n az1 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 1p | sed s'/.$//')"
 credhub set -n az2 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 2p | sed s'/.$//')"
 credhub set -n az3 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 3p)"
+
+credhub set -n pks_master_iam_instance_profile_name -t value -v "$(terraform output pks_master_iam_instance_profile_name)"
+credhub set -n pks_worker_iam_instance_profile_name -t value -v "$(terraform output pks_worker_iam_instance_profile_name)"
+
 ```
 Take a moment to review these settings with `credhub get -n <NAME>`.
 
