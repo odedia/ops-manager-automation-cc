@@ -508,7 +508,7 @@ config-uri: ${GITHUB_PUBLIC_REPO}
 aws-access-key-id: ${PCF_INSTALLER_ACCESS_KEY}
 aws-secret-access-key: ${PCF_INSTALLER_ACCESS_SECRET}
 s3-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
-region: $(terraform output region)
+region: ${PCF_REGION}
 pivnet-token: ${PIVNET_UAA_REFRESH_TOKEN}
 credhub-ca-cert: |
 $(echo $CREDHUB_CA_CERT | sed 's/- /-\n/g; s/ -/\n-/g' | sed '/CERTIFICATE/! s/ /\n/g' | sed 's/^/  /')
