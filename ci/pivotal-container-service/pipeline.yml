@@ -6,11 +6,6 @@ resource_types:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
 
-- name: gcs
-  type: docker-image
-  source:
-    repository: frodenas/gcs-resource
-
 resources:
 - name: daily-trigger
   type: time
@@ -29,12 +24,12 @@ resources:
     branch: 20190403
 
 - name: state
-  type: gcs
+  type: s3
   source:
-    versioned_file: state.yml
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: platform-automation-pivnet
   type: pivnet
@@ -45,68 +40,75 @@ resources:
     sort_by: semver
 
 - name: opsman-product
-  type: gcs
+  type: s3
   source:
-    regexp: OpsManager(.*)onGCP.yml
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    regexp: OpsManager(.*)onAWS.yml
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: pks-product
-  type: gcs
+  type: s3
   source:
     regexp: pivotal-container-service-(.*).pivotal
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: pks-stemcell
-  type: gcs
+  type: s3
   source:
-    regexp: pks-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    regexp: pks-stemcell/light-bosh-stemcell-(.*)-aws.*\.tgz
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: harbor-product
-  type: gcs
+  type: s3
   source:
     regexp: harbor-container-registry-(.*).pivotal
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: harbor-stemcell
-  type: gcs
+  type: s3
   source:
-    regexp: harbor-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    regexp: harbor-stemcell/light-bosh-stemcell-(.*)-aws.*\.tgz
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: platform-automation-tasks
-  type: gcs
+  type: s3
   source:
     regexp: platform-automation-tasks-(.*).zip
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: platform-automation-image
-  type: gcs
+  type: s3
   source:
     regexp: platform-automation-image-(.*).tgz
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 - name: installation
-  type: gcs
+  type: s3
   source:
     regexp: installations/installation-(.*).zip
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
+    bucket: ((s3-bucket))
+    access_key_id: ((aws-access-key-id))
+    region_name: ((region))
+    secret_access_key: ((aws-secret-access-key))
 
 jobs:
 - name: fetch-opsman
