@@ -46,6 +46,7 @@ resources:
     access_key_id: ((aws-access-key-id))
     region_name: ((region))
     secret_access_key: ((aws-secret-access-key))
+    bucket: ((s3-bucket))
 
 - name: pks-product
   type: s3
