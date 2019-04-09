@@ -26,6 +26,7 @@ resources:
 - name: state
   type: s3
   source:
+    versioned_file: state.yml
     bucket: ((s3-bucket))
     access_key_id: ((aws-access-key-id))
     region_name: ((region))
