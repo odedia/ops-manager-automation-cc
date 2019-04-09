@@ -435,14 +435,35 @@ Wait until the update is propagated but getting a response to this command:
 
 `dig +short pcf.${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}`
 
+
+Make sure you are in the right directory.
+### If you're targetting PAS ...
+
+```bash
+cd ~/terraforming/terraforming-pas
+ln -s ~/terraform.tfvars .
+PCF_INSTALLATION_KIND=pas" >> ~/.env
+source ~/.env
+```
+
+### ... or, if you're targetting PKS
+
+
 ## Store secrets in Credhub
+
+```bash
+cd ~/terraforming/terraforming-pks
+ln -s ~/terraform.tfvars .
+PCF_INSTALLATION_KIND=pks" >> ~/.env
+source ~/.env
+
+```
 
 ```bash
 credhub set -n pivnet-api-token -t value -v "${PIVNET_UAA_REFRESH_TOKEN}"
 credhub set -n domain-name -t value -v "${PCF_DOMAIN_NAME}"
 credhub set -n subdomain-name -t value -v "${PCF_SUBDOMAIN_NAME}"
 credhub set -n opsman-public-ip -t value -v "$(dig +short pcf.${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME})"
-credhub set -n gcp-credentials -t value -v "$(cat ~/gcp_credentials.json)"
 credhub set -n om-target -t value -v "${OM_TARGET}"
 credhub set -n om-skip-ssl-validation -t value -v "${OM_SKIP_SSL_VALIDATION}"
 credhub set -n om-username -t value -v "${OM_USERNAME}"
@@ -451,8 +472,22 @@ credhub set -n om-decryption-passphrase -t value -v "${OM_DECRYPTION_PASSPHRASE}
 credhub set -n domain-crt-ca -t value -v "$(cat ~/certs/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.ca.crt)"
 credhub set -n domain-crt -t value -v "$(cat ~/certs/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.crt)"
 credhub set -n domain-key -t value -v "$(cat ~/certs/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.key)"
+credhub set -n vms_security_group_id -t value -v "$(terraform output vms_security_group_id)"
+credhub set -n ops_manager_ssh_public_key_name -t value -v "$(terraform output ops_manager_ssh_public_key_name)"
+credhub set -n infrastructure_subnet_ids_1 -t value -v "$(terraform output infrastructure_subnet_ids | sed -n 1p | sed s'/.$//')"
+credhub set -n infrastructure_subnet_ids_2 -t value -v "$(terraform output infrastructure_subnet_ids | sed -n 2p | sed s'/.$//')"
+credhub set -n infrastructure_subnet_ids_3 -t value -v "$(terraform output infrastructure_subnet_ids | sed -n 3p)"
+credhub set -n pcf_subnet_ids_1 -t value -v "$(terraform output ${PKS_INSTALLATION_KIND}_subnet_ids | sed -n 1p | sed s'/.$//')"
+credhub set -n pcf_subnet_ids_2 -t value -v "$(terraform output ${PKS_INSTALLATION_KIND}_subnet_ids | sed -n 2p | sed s'/.$//')"
+credhub set -n pcf_subnet_ids_3 -t value -v "$(terraform output ${PKS_INSTALLATION_KIND}_subnet_ids | sed -n 3p)"
+credhub set -n services_subnet_ids_1 -t value -v "$(terraform output services_subnet_ids | sed -n 1p | sed s'/.$//')"
+credhub set -n services_subnet_ids_2 -t value -v "$(terraform output services_subnet_ids | sed -n 2p | sed s'/.$//')"
+credhub set -n services_subnet_ids_3 -t value -v "$(terraform output services_subnet_ids | sed -n 3p)"
+credhub set -n pcf_installation_kind -t value -v "${PKS_INSTALLATION_KIND}"
+credhub set -n az1 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 1p | sed s'/.$//')"
+credhub set -n az2 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 2p | sed s'/.$//')"
+credhub set -n az3 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 3p)"
 ```
-
 Take a moment to review these settings with `credhub get -n <NAME>`.
 
 ## Build the pipeline
