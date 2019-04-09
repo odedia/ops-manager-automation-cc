@@ -14,6 +14,9 @@ I recommend forking this repository so you can:
 * Make modifications to suit your own requirements
 * Protect your active pipelines from config changes made here
 
+## Increase your Elastic IPs limit on AWS
+I have reached the 5 EIP limit while trying to setup both PKS and Concourse. You should fill out a request form to increase this limit to 10. The form is available [Here]https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=service-code-elastic-ips.
+
 ## Create your jumpbox from your local machine 
 
 Everything is hard on AWS (especially when trying to run from the command line), so we will try to avoid directly interacting with AWS as much as humanley possible. It is also quite difficult to keep track of all services you use, so it's best to only create services via terraform that can be easily destroyed when needed. 
@@ -117,7 +120,7 @@ wget -O fly.tgz https://github.com/concourse/concourse/releases/download/v${FLY_
   sudo mv fly /usr/local/bin && \
   rm fly.tgz
   
-CT_VERSION=0.3.0
+CT_VERSION=0.3.1
 wget -O control-tower https://github.com/EngineerBetter/control-tower/releases/download/${CT_VERSION}/control-tower-linux-amd64 && \
   chmod +x control-tower && \
   sudo mv control-tower /usr/local/bin/
@@ -149,8 +152,8 @@ wget -O terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/ter
   sudo mv terraform /usr/local/bin && \
   rm terraform.zip
   
-TGCP_VERSION=0.37.0
-wget -O terraforming-aws.tar.gz https://github.com/pivotal-cf/terraforming-aws/releases/download/v${TGCP_VERSION}/terraforming-aws-v${TGCP_VERSION}.tar.gz && \
+TAWS_VERSION=0.37.0
+wget -O terraforming-aws.tar.gz https://github.com/pivotal-cf/terraforming-aws/releases/download/v${TAWS_VERSION}/terraforming-aws-v${TAWS_VERSION}.tar.gz && \
   tar -zxvf terraforming-aws.tar.gz && \
   rm terraforming-aws.tar.gz
 ```
