@@ -388,8 +388,8 @@ fly -t control-tower-${PCF_SUBDOMAIN_NAME} login --insecure --username admin --p
 -----------
 
 ```bash
-gsutil mb -c regional -l us-central1 gs://${PCF_SUBDOMAIN_NAME}-concourse-resources
-gsutil versioning set on gs://${PCF_SUBDOMAIN_NAME}-concourse-resources
+aws s3api create-bucket --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+aws s3api put-bucket-versioning --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --versioning-configuration Status=Enabled
 ```
 
 ## Add a dummy state file
@@ -402,10 +402,38 @@ Storing the `state.yml` file in git may work around this edge case but, arguably
 
 ```bash
 echo "---" > ~/state.yml
-gsutil cp ~/state.yml gs://${PCF_SUBDOMAIN_NAME}-concourse-resources/
+
+aws s3api put-object --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --key state.yml --body state.yml
 ```
 
-If required, be aware that versioned buckets require you to use `gsutil rm -a` to take files fully out of view.
+If you manage your domain name outside of AWS's route53, you need to set the NS records accordingly to what is shows in the route53 hosted zone.
+
+List the hosted zones using this command:
+
+`aws route53 list-hosted-zones`
+
+Find the hosted zone for the current deployment. Get the details about this hosted zone:
+
+`aws route53 get-hosted-zone --id <hoste-zone-id from previous command>`
+
+Copy the values from the `name servers`, for example:
+
+```
+    "DelegationSet": {
+        "NameServers": [
+            "ns-1806.awsdns-33.co.uk",
+            "ns-1248.awsdns-28.org",
+            "ns-670.awsdns-19.net",
+            "ns-441.awsdns-55.com"
+        ]
+    }
+```
+
+Set these records in your external domain registrar (such as Google Domains) as NS records.
+
+Wait until the update is propagated but getting a response to this command:
+
+`dig +short pcf.${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}`
 
 ## Store secrets in Credhub
 
@@ -413,7 +441,6 @@ If required, be aware that versioned buckets require you to use `gsutil rm -a` t
 credhub set -n pivnet-api-token -t value -v "${PIVNET_UAA_REFRESH_TOKEN}"
 credhub set -n domain-name -t value -v "${PCF_DOMAIN_NAME}"
 credhub set -n subdomain-name -t value -v "${PCF_SUBDOMAIN_NAME}"
-credhub set -n gcp-project-id -t value -v "$(gcloud config get-value core/project)"
 credhub set -n opsman-public-ip -t value -v "$(dig +short pcf.${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME})"
 credhub set -n gcp-credentials -t value -v "$(cat ~/gcp_credentials.json)"
 credhub set -n om-target -t value -v "${OM_TARGET}"
@@ -437,9 +464,9 @@ cat > ~/private.yml << EOF
 ---
 product-slug: ${PRODUCT_SLUG}
 config-uri: ${GITHUB_PUBLIC_REPO}
-gcp-credentials: |
-$(cat ~/gcp_credentials.json | sed 's/^/  /')
-gcs-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
+aws-access-key-id: ${PCF_INSTALLER_ACCESS_KEY}
+aws-secret-access-key: ${PCF_INSTALLER_ACCESS_SECRET}
+s3-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
 pivnet-token: ${PIVNET_UAA_REFRESH_TOKEN}
 credhub-ca-cert: |
 $(echo $CREDHUB_CA_CERT | sed 's/- /-\n/g; s/ -/\n-/g' | sed '/CERTIFICATE/! s/ /\n/g' | sed 's/^/  /')
