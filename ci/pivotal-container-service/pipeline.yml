@@ -141,7 +141,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/ops-manager/2.4/gcp/((product-slug))/config-pivnet.yml
+      CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-pivnet.yml
   - aggregate:
     - put: opsman-product
       params:
@@ -281,7 +281,7 @@ jobs:
       config: config
       vars: config
     params:
-      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/gcp/((product-slug))/config-vm.yml
+      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-vm.yml
   - put: state
     params:
       file: generated-state/state.yml
@@ -304,7 +304,7 @@ jobs:
       vars: config
     params:
       ENV_FILE: config/ops-manager/env.yml
-      DIRECTOR_CONFIG_FILE: config/ops-manager/2.4/gcp/((product-slug))/config.yml
+      DIRECTOR_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config.yml
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
@@ -398,7 +398,7 @@ jobs:
       vars: config
     params:
       ENV_FILE: config/ops-manager/env.yml
-      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/gcp/((product-slug))/config-vm.yml
+      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-vm.yml
   - put: state
     params:
       file: generated-state/state.yml
