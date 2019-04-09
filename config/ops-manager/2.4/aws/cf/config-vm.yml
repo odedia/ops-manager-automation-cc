@@ -1,15 +1,14 @@
 ---
 opsman-configuration:
-  gcp:
-    gcp_service_account: ((gcp-credentials))
-    project: ((gcp-project-id))
-    region: us-central1
-    zone: us-central1-a
-    vm_name: ops-manager-vm
-    vpc_subnet: ((subdomain-name))-infrastructure-subnet
-    tags: ((subdomain-name))-ops-manager-external
-    custom_cpu: 2
-    custom_memory: 8
-    boot_disk_size: 200
+  aws:
+    access_key_id: ((aws-access-key-id))
+    secret_access_key: ((aws-secret-access-key))
+    region: eu-west-2
+    vm_name: ops-manager-vm                           # default: OpsManager-vm
+    boot_disk_size: 150                               # default 200
+    security_group_id: ((vms_security_group_id))
+    key_pair_name: ((ops_manager_ssh_public_key_name))
+    instance_type: m5.large
+    # At least one IP address (public or private) needs to be assigned to the VM.
     public_ip: ((opsman-public-ip))
-    private_ip: 10.0.0.2
+
