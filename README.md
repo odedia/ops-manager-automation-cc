@@ -493,6 +493,9 @@ credhub set -n az3 -t value -v "$(terraform output infrastructure_subnet_availab
 credhub set -n pks_master_iam_instance_profile_name -t value -v "$(terraform output pks_master_iam_instance_profile_name)"
 credhub set -n pks_worker_iam_instance_profile_name -t value -v "$(terraform output pks_worker_iam_instance_profile_name)"
 
+credhub set -n aws-access-key-id -t value -v "${PCF_INSTALLER_ACCESS_KEY}"
+credhub set -n aws-secret-access-key -t value -v "${PCF_INSTALLER_ACCESS_SECRET}"
+
 ```
 Take a moment to review these settings with `credhub get -n <NAME>`.
 
@@ -505,8 +508,6 @@ cat > ~/private.yml << EOF
 ---
 product-slug: ${PRODUCT_SLUG}
 config-uri: ${GITHUB_PUBLIC_REPO}
-aws-access-key-id: ${PCF_INSTALLER_ACCESS_KEY}
-aws-secret-access-key: ${PCF_INSTALLER_ACCESS_SECRET}
 s3-bucket: ${PCF_SUBDOMAIN_NAME}-concourse-resources
 region: ${PCF_REGION}
 pivnet-token: ${PIVNET_UAA_REFRESH_TOKEN}
