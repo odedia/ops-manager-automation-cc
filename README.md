@@ -483,8 +483,7 @@ credhub set -n pcf_subnet_ids_3 -t value -v "$(terraform output ${PCF_INSTALLATI
 credhub set -n services_subnet_ids_1 -t value -v "$(terraform output services_subnet_ids | sed -n 1p | sed s'/.$//')"
 credhub set -n services_subnet_ids_2 -t value -v "$(terraform output services_subnet_ids | sed -n 2p | sed s'/.$//')"
 credhub set -n services_subnet_ids_3 -t value -v "$(terraform output services_subnet_ids | sed -n 3p)"
-credhub set -n pcf_installation_kind -t value -v "${PCF
-_INSTALLATION_KIND}"
+credhub set -n pcf_installation_kind -t value -v "${PCF_INSTALLATION_KIND}"
 
 credhub set -n region -t value -v "$(terraform output region)"
 credhub set -n az1 -t value -v "$(terraform output infrastructure_subnet_availability_zones | sed -n 1p | sed s'/.$//')"
