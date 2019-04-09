@@ -337,7 +337,7 @@ This will take about 20 mins to complete.
 ## Persist a few credentials
 
 ```bash
-INFO=$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET) \
+INFO=$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
   control-tower info \
     --region eu-west-2 \
     --iaas aws \
@@ -350,10 +350,10 @@ echo "CREDHUB_CA_CERT='$(echo ${INFO} | jq --raw-output .config.credhub_ca_cert)
 echo "CREDHUB_CLIENT=credhub_admin" >> ~/.env
 echo "CREDHUB_SECRET=$(echo ${INFO} | jq --raw-output .config.credhub_admin_client_secret)" >> ~/.env
 echo "CREDHUB_SERVER=$(echo ${INFO} | jq --raw-output .config.credhub_url)" >> ~/.env
-echo 'eval "$(GOOGLE_APPLICATION_CREDENTIALS=~/gcp_credentials.json \
+echo 'eval "$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
   control-tower info \
-    --region us-central1 \
-    --iaas gcp \
+    --region eu-west-2 \
+    --iaas aws \
     --env ${PCF_SUBDOMAIN_NAME})"' >> ~/.env
 
 source ~/.env
@@ -384,6 +384,8 @@ fly -t control-tower-${PCF_SUBDOMAIN_NAME} login --insecure --username admin --p
 ```
 
 ## Set up dedicated GCS bucket for downloads
+
+-----------
 
 ```bash
 gsutil mb -c regional -l us-central1 gs://${PCF_SUBDOMAIN_NAME}-concourse-resources
