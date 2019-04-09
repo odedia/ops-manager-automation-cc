@@ -16,7 +16,9 @@ I recommend forking this repository so you can:
 
 ## Create your jumpbox from your local machine 
 
-Download the [AWS SHELL]https://aws.amazon.com/cli/.
+Everything is hard on AWS (especially when trying to run from the command line), so we will try to avoid directly interacting with AWS as much as humanley possible. It is also quite difficult to keep track of all services you use, so it's best to only create services via terraform that can be easily destroyed when needed. 
+
+To that end, we will use a Google Cloud Platform jumpbox in order to perform all activities on AWS.
 
 ```bash
 GCP_PROJECT_ID=<TARGET_GCP_PROJECT_ID>
@@ -25,21 +27,21 @@ gcloud auth login --project ${GCP_PROJECT_ID} --quiet
 gcloud services enable compute.googleapis.com \
   --project "${GCP_PROJECT_ID}"
 
-gcloud compute instances create "jbox-cc" \
+gcloud compute instances create "jbox-aws-cc" \
   --image-project "ubuntu-os-cloud" \
   --image-family "ubuntu-1804-lts" \
   --boot-disk-size "200" \
   --machine-type=g1-small \
   --project "${GCP_PROJECT_ID}" \
-  --zone "us-central1-a"
+  --zone "europe-west2-c"
 ```
 
 ## Move to the jumpbox and log in to GCP
 
 ```bash
-gcloud compute ssh ubuntu@jbox-cc \
+gcloud compute ssh ubuntu@jbox-aws-cc \
   --project "${GCP_PROJECT_ID}" \
-  --zone "us-central1-a"
+  --zone "europe-west2-c"
 ```
   
 ```bash
@@ -57,7 +59,7 @@ echo "# *** your environment-specific variables will go here ***" >> ~/.env
 echo "PIVNET_UAA_REFRESH_TOKEN=CHANGE_ME_PIVNET_UAA_REFRESH_TOKEN" >> ~/.env # e.g. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-r
 echo "PCF_DOMAIN_NAME=CHANGE_ME_DOMAIN_NAME" >> ~/.env                       # e.g. "mydomain.com", "pal.pivotal.io", "pivotaledu.io", etc.
 echo "PCF_SUBDOMAIN_NAME=CHANGE_ME_SUBDOMAIN_NAME" >> ~/.env                 # e.g. "mypks", "mypas", "cls66env99", "maroon", etc.
-echo "GITHUB_PUBLIC_REPO=CHANGE_ME_GITHUB_PUBLIC_REPO" >> ~/.env             # e.g. https://github.com/amcginlay/ops-manager-automation-cc.git
+echo "GITHUB_PUBLIC_REPO=CHANGE_ME_GITHUB_PUBLIC_REPO" >> ~/.env             # e.g. https://github.com/odedia/ops-manager-automation-cc.git
 
 echo "export OM_TARGET=https://pcf.\${PCF_SUBDOMAIN_NAME}.\${PCF_DOMAIN_NAME}" >> ~/.env
 echo "export OM_USERNAME=admin" >> ~/.env
@@ -83,21 +85,33 @@ source ~/.env
 ## Prepare jumpbox and generate service account
 
 ```bash
-gcloud services enable iam.googleapis.com --async
-gcloud services enable cloudresourcemanager.googleapis.com --async
-gcloud services enable dns.googleapis.com --async
-gcloud services enable sqladmin.googleapis.com --async
 
 sudo apt update --yes && \
 sudo apt install --yes jq && \
 sudo apt install --yes build-essential && \
-sudo apt install --yes ruby-dev
+sudo apt install --yes ruby-dev && \
+sudo apt install --yes python3-pip && \
+sudo apt install --yes awscli
+```
+
+Configure your accese to AWS:
+```bash
+aws configure
+```
+
+Provide your AWS Access Key and Secret. You can get them from the AWS console by clicking your username on the top right and selecting `My Security Credentials`:
+
+```bash
+AWS Access Key ID [****************AAAA]: 
+AWS Secret Access Key [****************AAAA]: 
+Default region name [eu-west-2]: 
+Default output format [json]: 
 ```
 
 ```bash
 cd ~
 
-FLY_VERSION=5.0.0
+FLY_VERSION=5.0.1
 wget -O fly.tgz https://github.com/concourse/concourse/releases/download/v${FLY_VERSION}/fly-${FLY_VERSION}-linux-amd64.tgz && \
   tar -xvf fly.tgz && \
   sudo mv fly /usr/local/bin && \
@@ -135,10 +149,10 @@ wget -O terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/ter
   sudo mv terraform /usr/local/bin && \
   rm terraform.zip
   
-TGCP_VERSION=0.74.0
-wget -O terraforming-gcp.tar.gz https://github.com/pivotal-cf/terraforming-gcp/releases/download/v${TGCP_VERSION}/terraforming-gcp-v${TGCP_VERSION}.tar.gz && \
-  tar -zxvf terraforming-gcp.tar.gz && \
-  rm terraforming-gcp.tar.gz
+TGCP_VERSION=0.37.0
+wget -O terraforming-aws.tar.gz https://github.com/pivotal-cf/terraforming-aws/releases/download/v${TGCP_VERSION}/terraforming-aws-v${TGCP_VERSION}.tar.gz && \
+  tar -zxvf terraforming-aws.tar.gz && \
+  rm terraforming-aws.tar.gz
 ```
 
 ```bash
@@ -149,10 +163,83 @@ gcloud projects add-iam-policy-binding $(gcloud config get-value core/project) \
   --role 'roles/owner'
 
 cd ~
-gcloud iam service-accounts keys create 'gcp_credentials.json' \
-  --iam-account "p-service@$(gcloud config get-value core/project).iam.gserviceaccount.com"
+
+aws iam create-user --user-name pcf-installer
+PCF_INSTALLER_RESPONSE_JSON=`aws iam create-access-key --user-name pcf-installer`
+PCF_INSTALLER_ACCESS_KEY=`echo $PCF_INSTALLER_RESPONSE_JSON | jq -r .AccessKey.AccessKeyId`
+PCF_INSTALLER_ACCESS_SECRET=`echo $PCF_INSTALLER_RESPONSE_JSON | jq -r .AccessKey.SecretAccessKey`
+echo "PCF_INSTALLER_ACCESS_KEY=${PCF_INSTALLER_ACCESS_KEY}" >> ~/.env
+echo "PCF_INSTALLER_ACCESS_SECRET=${PCF_INSTALLER_ACCESS_SECRET}" >> ~/.env
+
+aws iam create-group --group-name pcf-installer-group
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonRDSFullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AmazonVPCFullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/IAMFullAccess
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser
 ```
 
+Create a custom policy as follows:
+
+```bash
+cat > ~/custom_pcf_policy.json <<-EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "KMSKeyDeletionAndUpdate",
+            "Effect": "Allow",
+            "Action": [
+                "kms:UpdateKeyDescription",
+                "kms:ScheduleKeyDeletion"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": "eu-west-2"
+                }
+            }
+        }
+    ]
+}
+EOF
+```
+
+__OR__ if you want to limit the deployment to a single region only, use the following:
+
+```
+cat > ~/custom_pcf_policy.json <<-EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "KMSKeyDeletionAndUpdate",
+            "Effect": "Allow",
+            "Action": [
+                "kms:UpdateKeyDescription",
+                "kms:ScheduleKeyDeletion"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": "eu-west-2"
+                }
+            }
+        }
+    ]
+}
+EOF
+```
+Continue creating permissions and service accounts:
+
+```bash
+PCF_INSTALLER_POLICY_ARN=`aws iam create-policy --policy-name custom_pcf_policy --policy-document file:///home/ubuntu/custom_pcf_policy.json | jq -r .Policy.Arn`
+aws iam attach-group-policy --group-name pcf-installer-group --policy-arn $PCF_INSTALLER_POLICY_ARN
+aws iam add-user-to-group --user-name pcf-installer --group-name pcf-installer-group
+
+```
 ## Clone this repo
 
 The scripts, pipelines and config you need to complete the following steps are inside this repo, so clone it to your jumpbox:
@@ -173,25 +260,23 @@ DOMAIN=${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME} ~/ops-manager-automation-cc/bin/
 
 ```bash
 cat > ~/terraform.tfvars <<-EOF
-dns_suffix             = "${PCF_DOMAIN_NAME}"
 env_name               = "${PCF_SUBDOMAIN_NAME}"
-region                 = "us-central1"
-zones                  = ["us-central1-b", "us-central1-a", "us-central1-c"]
-project                = "$(gcloud config get-value core/project)"
-opsman_image_url       = ""
-opsman_vm              = 0
-create_gcs_buckets     = "false"
-external_database      = 0
-isolation_segment      = 0
-ssl_cert            = <<SSL_CERT
+access_key         = "${PCF_INSTALLER_ACCESS_KEY}"
+secret_key         = "${PCF_INSTALLER_ACCESS_SECRET}"
+region             = "eu-west-2"
+availability_zones = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+ops_manager_ami    = ""
+rds_instance_count = 0
+dns_suffix         = "${PCF_DOMAIN_NAME}"
+vpc_cidr           = "10.0.0.0/16"
+use_route53        = true
+use_tcp_routes     = true
+ssl_cert           = <<SSL_CERT
 $(cat ~/certs/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.crt)
 SSL_CERT
 ssl_private_key     = <<SSL_KEY
 $(cat ~/certs/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.key)
 SSL_KEY
-service_account_key = <<SERVICE_ACCOUNT_KEY
-$(cat ~/gcp_credentials.json)
-SERVICE_ACCOUNT_KEY
 EOF
 ```
 
@@ -235,10 +320,11 @@ This will take about 2 mins to complete.
 We use Control Tower to install Concourse, as follows:
 
 ```bash
-GOOGLE_APPLICATION_CREDENTIALS=~/gcp_credentials.json \
-  control-tower deploy \
-    --region us-central1 \
-    --iaas gcp \
+AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY \
+AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
+control-tower deploy \
+    --region eu-west-2 \
+    --iaas aws \
     --workers 3 \
     ${PCF_SUBDOMAIN_NAME}
 ```
@@ -248,10 +334,10 @@ This will take about 20 mins to complete.
 ## Persist a few credentials
 
 ```bash
-INFO=$(GOOGLE_APPLICATION_CREDENTIALS=~/gcp_credentials.json \
+INFO=$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET) \
   control-tower info \
-    --region us-central1 \
-    --iaas gcp \
+    --region eu-west-2 \
+    --iaas aws \
     --json \
     ${PCF_SUBDOMAIN_NAME}
 )
