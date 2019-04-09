@@ -441,8 +441,8 @@ Make sure you are in the right directory.
 
 ```bash
 cd ~/terraforming/terraforming-pas
-ln -s ~/terraform.tfvars .
 echo "PCF_INSTALLATION_KIND=pas" >> ~/.env
+echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 ```
 
@@ -453,8 +453,8 @@ source ~/.env
 
 ```bash
 cd ~/terraforming/terraforming-pks
-ln -s ~/terraform.tfvars .
 echo "PCF_INSTALLATION_KIND=pks" >> ~/.env
+echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 
 ```
