@@ -36,9 +36,9 @@ product-properties:
     value: Plan Inactive
   .properties.cloud_provider:
     value: AWS
-  .properties.cloud_provider.aws.pks_master_iam_instance_profile_name:
+  .properties.cloud_provider.aws.iam_instance_profile_master:
     value: ((pks_master_iam_instance_profile_name))
-  .properties.cloud_provider.aws.pks_worker_iam_instance_profile_name:
+  .properties.cloud_provider.aws.iam_instance_profile_worker:
     value: ((pks_worker_iam_instance_profile_name))
   .properties.vm_extensions:
     value:
