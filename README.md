@@ -355,7 +355,7 @@ Storing the `state.yml` file in git may work around this edge case but, arguably
 ```bash
 echo "---" > ~/state.yml
 
-aws s3api put-object --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --key state.yml --body state.yml
+aws s3api put-object --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --key state.yml --body ~/state.yml
 ```
 
 If you manage your domain name outside of AWS's route53, you need to set the NS records accordingly to what is shows in the route53 hosted zone.
