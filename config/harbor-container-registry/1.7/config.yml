@@ -8,7 +8,7 @@ network-properties:
   - name: ((az2))
   - name: ((az3))
   singleton_availability_zone:
-    name: eu-west-2
+    name: ((region))
 product-properties:
   .properties.admin_password:
     value:
