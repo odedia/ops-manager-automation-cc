@@ -17,44 +17,9 @@ I recommend forking this repository so you can:
 ## Increase your Elastic IPs limit on AWS
 I have reached the 5 EIP limit while trying to setup both PKS and Concourse. You should fill out a request form to increase this limit to 10. The form is available [Here](https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=service-code-elastic-ips).
 
-## Create your jumpbox from your local machine 
+## Create a jumpbox from your local machine 
+Please use the EC2 Dashboard to create an Ubuntu 18.04 LTS EC2 instance with an m4.large instance type. Once done, ssh into the machine.
 
-Configure your access to AWS:
-```bash
-aws configure
-```
-
-Provide your AWS Access Key and Secret. You can get them from the AWS console by clicking your username on the top right and selecting `My Security Credentials`. Make sure you choose the region you plan to deploy to (eu-west-2 shown below as an example):
-
-```bash
-AWS Access Key ID [****************AAAA]: 
-AWS Secret Access Key [****************AAAA]: 
-Default region name [eu-west-2]: 
-Default output format [json]: 
-```
-Locate the AMI ID for Ubuntu 18.04 LTS for the region you plan to deploy to from [this list](https://cloud-images.ubuntu.com/locator/ec2/) and populate the AMI_ID variable:
-
-`AMI_ID=ami-07dc734dc14746eab`
-
-Create the jumpbox:
-
-```bash
-aws ec2 create-key-pair --key-name aws-pcf-jumpbox --query 'KeyMaterial' --output text > ~/.ssh/aws-pcf-jumpbox.pem
-chmod 600 ~/.ssh/aws-pcf-jumpbox.pem
-PCF_JUMPBOX_VPC_ID=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq -r .Vpc.VpcId`
-PCF_JUMPBOX_SUBNET_ID=`aws ec2 create-subnet --vpc-id $PCF_JUMPBOX_VPC_ID --cidr-block 10.0.1.0/24 | jq -r .Subnet.SubnetId`
-aws ec2 run-instances --image-id $AMI_ID --count 1 --instance-type m4.large --key-name aws-pcf-jumpbox --subnet-id $PCF_JUMPBOX_SUBNET_ID
-
-```
-
-## Move to the jumpbox and log in to GCP
-
-```bash
-gcloud compute ssh ubuntu@jbox-aws-cc \
-  --project "${GCP_PROJECT_ID}" \
-  --zone "europe-west2-c"
-```
-  
 All following commands should be executed from the jumpbox unless otherwsie instructed.
 
 ## Prepare your environment file
