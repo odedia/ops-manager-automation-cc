@@ -2,13 +2,13 @@
 product-name: harbor-container-registry
 network-properties:
   network:
-    name: pks-services
+    name: ((pks_network_name))
   other_availability_zones:
   - name: ((az1))
   - name: ((az2))
   - name: ((az3))
   singleton_availability_zone:
-    name: ((region))
+    name: ((az1))
 product-properties:
   .properties.admin_password:
     value:
