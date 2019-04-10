@@ -109,6 +109,7 @@ properties-configuration:
     handlers: []
   iaas_configuration:
     encrypted: false
+    ssh_private_key: ((ssh_private_key))
     iam_instance_profile: ((ops_manager_iam_instance_profile_name))
     key_pair_name: ((ops_manager_ssh_public_key_name))
     region: ((region))
