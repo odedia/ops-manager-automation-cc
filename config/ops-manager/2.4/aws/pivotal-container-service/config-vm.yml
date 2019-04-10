@@ -3,7 +3,7 @@ opsman-configuration:
   aws:
     access_key_id: ((aws-access-key-id))
     secret_access_key: ((aws-secret-access-key))
-    region: (( region ))
+    region: ((region))
     vm_name: ops-manager-vm                           # default: OpsManager-vm
     vpc_subnet_id: ((vpc_subnet_id))
     iam_instance_profile_name: ((ops_manager_iam_instance_profile_name))
