@@ -10,7 +10,7 @@ network-properties:
   network:
     name: pks
   service_network:
-    name: pks-services
+    name: services
 product-properties:
   .pivotal-container-service.pks_tls:
     value:
@@ -36,9 +36,9 @@ product-properties:
     value: Plan Inactive
   .properties.cloud_provider:
     value: AWS
-  .properties.cloud_provider.aws.pks_master_iam_instance_profile_name:
+  .properties.cloud_provider.aws.iam_instance_profile_master:
     value: ((pks_master_iam_instance_profile_name))
-  .properties.cloud_provider.aws.pks_worker_iam_instance_profile_name:
+  .properties.cloud_provider.aws.iam_instance_profile_worker:
     value: ((pks_worker_iam_instance_profile_name))
   .properties.vm_extensions:
     value:
@@ -51,4 +51,4 @@ errand-config:
 resource-config:
   pivotal-container-service:
     elb_names:
-    - tcp:((subdomain-name))-pks-api
+    - ((subdomain-name))-pks-api

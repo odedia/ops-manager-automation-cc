@@ -91,7 +91,6 @@ properties-configuration:
     encryption:
       keys: []
       providers: []
-    excluded_recursors: []
     hm_emailer_options:
       enabled: false
     hm_pager_duty_options:
@@ -108,15 +107,13 @@ properties-configuration:
     skip_director_drain: true
   dns_configuration:
     handlers: []
-  # iaas_configuration:
-  #   encrypted: false
-  #   guid: ((properties-configuration_iaas_configuration_guid))
-  #   iam_instance_profile: ((properties-configuration_iaas_configuration_iam_instance_profile))
-  #   key_pair_name: ((properties-configuration_iaas_configuration_key_pair_name))
-  #   kms_key_arn: ((properties-configuration_iaas_configuration_kms_key_arn))
-  #   name: ((properties-configuration_iaas_configuration_name))
-  #   region: ((properties-configuration_iaas_configuration_region))
-  #   security_group: ((properties-configuration_iaas_configuration_security_group))
+  iaas_configuration:
+    encrypted: false
+    ssh_private_key: ((ssh_private_key))
+    iam_instance_profile: ((ops_manager_iam_instance_profile_name))
+    key_pair_name: ((ops_manager_ssh_public_key_name))
+    region: ((region))
+    security_group: ((vms_security_group_id))
   security_configuration:
     generate_vm_passwords: true
   syslog_configuration:
