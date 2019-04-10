@@ -2,7 +2,7 @@
 product-name: harbor-container-registry
 network-properties:
   network:
-    name: ((pks_network_name))
+    name: pcfinternal-vpc
   other_availability_zones:
   - name: ((az1))
   - name: ((az2))
