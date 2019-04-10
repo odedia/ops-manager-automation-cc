@@ -10,7 +10,7 @@ network-properties:
   network:
     name: pks
   service_network:
-    name: pks-services
+    name: services
 product-properties:
   .pivotal-container-service.pks_tls:
     value:
