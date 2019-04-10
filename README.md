@@ -498,6 +498,9 @@ credhub set -n aws-secret-access-key -t value -v "${PCF_INSTALLER_ACCESS_SECRET}
 
 credhub set -n vpc_subnet_id -t value -v "$(terraform output public_subnets | sed -n 1p | sed s'/.$//')"
 credhub set -n ops_manager_iam_instance_profile_name -t value -v "$(terraform output ops_manager_iam_instance_profile_name)"
+credhub set -n ops_manager_ssh_public_key_name -t value -v "$(terraform output ops_manager_ssh_public_key_name)"
+credhub set -n vms_security_group_id -t value -v "$(terraform output vms_security_group_id)"
+credhub set -n ssh_private_key -t value -v "$(terraform output ops_manager_ssh_private_key)"
 
 ```
 Take a moment to review these settings with `credhub get -n <NAME>`.
