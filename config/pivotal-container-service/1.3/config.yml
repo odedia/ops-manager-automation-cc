@@ -51,4 +51,4 @@ errand-config:
 resource-config:
   pivotal-container-service:
     elb_names:
-    - tcp:((subdomain-name))-pks-api
+    - ((subdomain-name))-pks-api
