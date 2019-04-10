@@ -15,12 +15,12 @@ I recommend forking this repository so you can:
 * Protect your active pipelines from config changes made here
 
 ## Increase your Elastic IPs limit on AWS
-I have reached the 5 EIP limit while trying to setup both PKS and Concourse. You should fill out a request form to increase this limit to 10. The form is available [Here](https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=service-code-elastic-ips).
+I have reached the 5 EIP limit while trying to setup both PKS and Concourse. You should fill out a request form to increase this limit to 10. The form is available [here](https://console.aws.amazon.com/support/cases#/create?issueType=service-limit-increase&limitType=service-code-elastic-ips).
 
 ## Create a jumpbox from your local machine 
 Please use the EC2 Dashboard to create an Ubuntu 18.04 LTS EC2 instance with an m4.large instance type. Once done, ssh into the machine.
 
-All following commands should be executed from the jumpbox unless otherwsie instructed.
+All following commands should be executed from the jumpbox unless otherwise instructed.
 
 ## Prepare your environment file
 
@@ -32,12 +32,17 @@ echo "PIVNET_UAA_REFRESH_TOKEN=CHANGE_ME_PIVNET_UAA_REFRESH_TOKEN" >> ~/.env # e
 echo "PCF_DOMAIN_NAME=CHANGE_ME_DOMAIN_NAME" >> ~/.env                       # e.g. "mydomain.com", "pal.pivotal.io", "pivotaledu.io", etc.
 echo "PCF_SUBDOMAIN_NAME=CHANGE_ME_SUBDOMAIN_NAME" >> ~/.env                 # e.g. "mypks", "mypas", "cls66env99", "maroon", etc.
 echo "GITHUB_PUBLIC_REPO=CHANGE_ME_GITHUB_PUBLIC_REPO" >> ~/.env             # e.g. https://github.com/odedia/ops-manager-automation-cc.git
+echo "PCF_REGION=CHANGE_ME_PCF_REGION" >> ~/.env                 # e.g. eu-west-2, eu-central-1 etc.
+echo "PCF_AZ1=CHANGE_ME_PCF_AZ1" >> ~/.env                 # e.g. "eu-west-2a", "eu-central-1a" etc.
+echo "PCF_AZ2=CHANGE_ME_PCF_AZ2" >> ~/.env                 # e.g. "eu-west-2b", "eu-central-1b" etc.
+echo "PCF_AZ3=CHANGE_ME_PCF_AZ3" >> ~/.env                 # e.g. "eu-west-2c", "eu-central-1c" etc.
 
 echo "export OM_TARGET=https://pcf.\${PCF_SUBDOMAIN_NAME}.\${PCF_DOMAIN_NAME}" >> ~/.env
 echo "export OM_USERNAME=admin" >> ~/.env
 echo "export OM_PASSWORD=$(uuidgen)" >> ~/.env
 echo "export OM_DECRYPTION_PASSPHRASE=\${OM_PASSWORD}" >> ~/.env
 echo "export OM_SKIP_SSL_VALIDATION=true" >> ~/.env
+
 ```
 
 __Before__ continuing, open the `.env` file and update the `CHANGE_ME` values accordingly.
@@ -80,7 +85,7 @@ Configure your access to AWS:
 aws configure
 ```
 
-Provide your AWS Access Key and Secret. You can get them from the AWS console by clicking your username on the top right and selecting `My Security Credentials`:
+Provide your AWS Access Key and Secret. You can get them from the AWS console by clicking your username on the top right and selecting `My Security Credentials`. Make sure you select the region you plan to deploy to (eu-west-2 is shown below as an example):
 
 ```bash
 AWS Access Key ID [****************AAAA]: 
@@ -171,43 +176,13 @@ cat > ~/custom_pcf_policy.json <<-EOF
                 "kms:UpdateKeyDescription",
                 "kms:ScheduleKeyDeletion"
             ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "aws:RequestedRegion": "eu-west-2"
-                }
-            }
+            "Resource": "*"
         }
     ]
 }
 EOF
 ```
 
-__OR__ if you want to limit the deployment to a single region only, use the following:
-
-```
-cat > ~/custom_pcf_policy.json <<-EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "KMSKeyDeletionAndUpdate",
-            "Effect": "Allow",
-            "Action": [
-                "kms:UpdateKeyDescription",
-                "kms:ScheduleKeyDeletion"
-            ],
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "aws:RequestedRegion": "eu-west-2"
-                }
-            }
-        }
-    ]
-}
-EOF
-```
 Continue creating permissions and service accounts:
 
 ```bash
@@ -236,11 +211,11 @@ DOMAIN=${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME} ~/ops-manager-automation-cc/bin/
 
 ```bash
 cat > ~/terraform.tfvars <<-EOF
-env_name               = "${PCF_SUBDOMAIN_NAME}"
+env_name           = "${PCF_SUBDOMAIN_NAME}"
 access_key         = "${PCF_INSTALLER_ACCESS_KEY}"
 secret_key         = "${PCF_INSTALLER_ACCESS_SECRET}"
-region             = "eu-west-2"
-availability_zones = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+region             = "${PCF_REGION}"
+availability_zones = ["${PCF_AZ1}", "${PCF_AZ2}", "${PCF_AZ3}"]
 ops_manager_ami    = ""
 rds_instance_count = 0
 dns_suffix         = "${PCF_DOMAIN_NAME}"
@@ -256,8 +231,8 @@ SSL_KEY
 EOF
 ```
 
-Note the `opsman_image_url == ""` setting which prohibits Terraform from downloading and deploying the Ops Manager VM.
-The Concourse pipelines will take responsibility for this.
+Note the `opsman_image_url == ""` setting which prohibits terraform from downloading and deploying the Ops Manager VM.
+The Concourse pipeline will take responsibility for this.
 
 ## Terraform the infrastructure
 
@@ -299,7 +274,7 @@ We use Control Tower to install Concourse, as follows:
 AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY \
 AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
 control-tower deploy \
-    --region eu-west-2 \
+    --region ${PCF_REGION} \
     --iaas aws \
     --workers 3 \
     ${PCF_SUBDOMAIN_NAME}
@@ -312,7 +287,7 @@ This will take about 20 mins to complete.
 ```bash
 INFO=$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
   control-tower info \
-    --region eu-west-2 \
+    --region ${PCF_REGION} \
     --iaas aws \
     --json \
     ${PCF_SUBDOMAIN_NAME}
@@ -325,7 +300,7 @@ echo "CREDHUB_SECRET=$(echo ${INFO} | jq --raw-output .config.credhub_admin_clie
 echo "CREDHUB_SERVER=$(echo ${INFO} | jq --raw-output .config.credhub_url)" >> ~/.env
 echo 'eval "$(AWS_ACCESS_KEY_ID=$PCF_INSTALLER_ACCESS_KEY AWS_SECRET_ACCESS_KEY=$PCF_INSTALLER_ACCESS_SECRET \
   control-tower info \
-    --region eu-west-2 \
+    --region ${PCF_REGION} \
     --iaas aws \
     --env ${PCF_SUBDOMAIN_NAME})"' >> ~/.env
 
@@ -356,14 +331,18 @@ __Note__ `control-tower` will log you in but valid access tokens will expire eve
 fly -t control-tower-${PCF_SUBDOMAIN_NAME} login --insecure --username admin --password ${CC_ADMIN_PASSWD}
 ```
 
-## Set up dedicated GCS bucket for downloads
+## Set up dedicated S3 buckets for downloads
 
 -----------
 
 ```bash
-aws s3api create-bucket --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+aws s3api create-bucket --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --region $PCF_REGION --create-bucket-configuration LocationConstraint=$PCF_REGION
 aws s3api put-bucket-versioning --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --versioning-configuration Status=Enabled
 ```
+
+(todo verify): aws s3api put-public-access-block --bucket ${PCF_SUBDOMAIN_NAME}-concourse-resources --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+
+Check the access control to the create buckets in the AWS S3 dashboard and make sure they match your security policies.
 
 ## Add a dummy state file
 
@@ -415,7 +394,6 @@ Make sure you are in the right directory.
 ```bash
 cd ~/terraforming/terraforming-pas
 echo "PCF_INSTALLATION_KIND=pas" >> ~/.env
-echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 ```
 
@@ -427,7 +405,6 @@ source ~/.env
 ```bash
 cd ~/terraforming/terraforming-pks
 echo "PCF_INSTALLATION_KIND=pks" >> ~/.env
-echo "PCF_REGION=`terraform output region`" >> ~/.env
 source ~/.env
 
 ```
