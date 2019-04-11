@@ -4,7 +4,7 @@ opsman-configuration:
     access_key_id: ((aws-access-key-id))
     secret_access_key: ((aws-secret-access-key))
     region: ((region))
-    vm_name: ops-manager-vm                           # default: OpsManager-vm
+    vm_name: aws-ops-manager                           # default: OpsManager-vm
     vpc_subnet_id: ((vpc_subnet_id))
     iam_instance_profile_name: ((ops_manager_iam_instance_profile_name))
     boot_disk_size: 150                               # default 200
