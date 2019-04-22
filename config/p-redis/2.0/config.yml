@@ -1,0 +1,79 @@
+product-name: p-redis
+product-properties:
+  .cf-redis-broker.redis_maxmemory:
+    value: 512MB
+  .cf-redis-broker.service_instance_limit:
+    value: 5
+  .properties.backups_selector:
+    value: No Backups
+  .properties.canary_org_space_selector:
+    value: "No"
+  .properties.delete_dedicated_instances_multi_select:
+    value:
+    - I understand the risk
+  .properties.large_plan_selector:
+    value: Plan Inactive
+  .properties.medium_plan_selector:
+    value: Plan Inactive
+  .properties.small_plan_selector.active.az_single_select:
+    value: ((az1))
+  .properties.metrics_polling_interval:
+    value: 30
+  .properties.small_plan_selector:
+    value: Plan Active
+  .properties.syslog_selector:
+    value: "No"
+  .redis-on-demand-broker.maximum_parallel_upgrades:
+    value: 1
+  .redis-on-demand-broker.service_instance_limit:
+    value: 20
+  .redis-on-demand-broker.service_instance_sharing:
+    value: false
+  .redis-on-demand-broker.upgrade_canary_number:
+    value: 1
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: ((az1)) 
+  - name: ((az2))
+  - name: ((az3))
+  service_network:
+    name: services
+  singleton_availability_zone:
+    name: ((az3))
+resource-config:
+  cf-redis-broker:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  redis-on-demand-broker:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+errand-config:
+  broker-deregistrar:
+    pre-delete-state: true
+  broker-registrar:
+    post-deploy-state: true
+  cleanup-metadata-if-dedicated-disabled:
+    post-deploy-state: true
+  delete-all-service-instances-and-deregister-broker:
+    pre-delete-state: true
+  deprecate-dedicated-vm-plan:
+    post-deploy-state: true
+  on-demand-broker-smoke-tests:
+    post-deploy-state: true
+  recreate-all-service-instances:
+    post-deploy-state: false
+  register-broker:
+    post-deploy-state: true
+  smoke-tests:
+    post-deploy-state: true
+  upgrade-all-service-instances:
+    post-deploy-state: true
+

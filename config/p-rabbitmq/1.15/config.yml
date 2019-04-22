@@ -1,0 +1,135 @@
+product-name: p-rabbitmq
+product-properties:
+  .on-demand-broker.canaries:
+    value: 1
+  .on-demand-broker.global_service_instance_quota:
+    value: 20
+  .on-demand-broker.max_in_flight:
+    value: 3
+  .properties.enable_tls_selector:
+    value: disabled
+  .properties.global_settings_secure_bindings:
+    value: "No"
+  .properties.global_settings_shareable_instances:
+    value: "No"
+  .properties.metrics_polling_interval:
+    value: 30
+  .properties.multitenant_support:
+    value: enabled
+  .properties.multitenant_support.enabled.broker_operator_set_policy_enabled:
+    value: false
+  .properties.multitenant_support.enabled.disk_alarm_threshold:
+    value: '{mem_relative,1.0}'
+  .properties.multitenant_support.enabled.server_admin_credentials:
+    value:
+      identity: admin
+      password: ((rabbitmq-multitenant-password))
+  .properties.multitenant_support.enabled.server_cluster_partition_handling:
+    value: pause_minority
+  .properties.multitenant_support.enabled.server_plugins:
+    value:
+    - rabbitmq_management
+  .properties.multitenant_support.enabled.server_ports:
+    value: 15672, 5672, 5671, 1883, 8883, 61613, 61614, 15674
+
+
+
+
+  .properties.multitenant_support.enabled.server_ssl_fail_if_no_peer_cert:
+    value: false
+  .properties.multitenant_support.enabled.server_ssl_verification_depth:
+    value: 5
+  .properties.multitenant_support.enabled.server_ssl_verify:
+    value: false
+  .properties.multitenant_support.enabled.server_ssl_versions:
+    value:
+    - tlsv1.1
+    - tlsv1.2
+  .properties.on_demand_broker_plan_1_cf_service_access:
+    value: enable
+  .properties.on_demand_broker_plan_1_description:
+    value: This plan provides a single dedicated RabbitMQ 3.7 node
+  .properties.on_demand_broker_plan_1_disk_limit_acknowledgement:
+    value:
+    - acknowledge
+  .properties.on_demand_broker_plan_1_features:
+    value: RabbitMQ 3.7
+  .properties.on_demand_broker_plan_1_instance_quota:
+    value: 10
+  .properties.on_demand_broker_plan_1_name:
+    value: single-node-3.7
+  .properties.on_demand_broker_plan_1_rabbitmq_az_placement:
+    value:
+    - ((az1))
+    - ((az2))
+    - ((az3))
+  .properties.on_demand_broker_plan_1_rabbitmq_cluster_partition_handling_strategy:
+    value: pause_minority
+  .properties.on_demand_broker_plan_1_rabbitmq_number_of_nodes:
+    value: 1
+  .properties.on_demand_broker_plan_2_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_3_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_4_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_5_selector:
+    value: disabled
+  .properties.syslog_selector:
+    value: disabled
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
+  service_network:
+    name: services
+  singleton_availability_zone:
+    name: ((az1))
+resource-config:
+  on-demand-broker:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  rabbitmq-broker:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  rabbitmq-haproxy:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  rabbitmq-server:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+errand-config:
+  broker-deregistrar:
+    pre-delete-state: true
+  broker-registrar:
+    post-deploy-state: true
+  delete-all-service-instances:
+    pre-delete-state: true
+  deregister-broker:
+    pre-delete-state: true
+  on-demand-broker-smoke-tests:
+    post-deploy-state: true
+  recreate-all-service-instances:
+    post-deploy-state: false
+  register-broker:
+    post-deploy-state: true
+  smoke-tests:
+    post-deploy-state: true
+  upgrade-all-service-instances:
+    post-deploy-state: true
+

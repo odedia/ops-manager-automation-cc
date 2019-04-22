@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: apm-*.pivotal
+pivnet-product-slug: apm
+product-version-regex: 1\.6\.(.*)
+stemcell-iaas: google

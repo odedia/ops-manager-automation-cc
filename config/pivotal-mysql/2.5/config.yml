@@ -1,11 +1,11 @@
 product-name: pivotal-mysql
 network-properties:
   singleton_availability_zone:
-    name: ((az1))
+    name: ((region))-a
   other_availability_zones:
-  - name: ((az1))
-  - name: ((az2))
-  - name: ((az3))
+  - name: ((region))-a
+  - name: ((region))-b
+  - name: ((region))-c
   network:
     name: pas
   service_network:
@@ -13,21 +13,21 @@ network-properties:
 product-properties:
   .properties.plan1_selector.single_node.az_multi_select:
     value:
-    - ((az1))
-    - ((az2))
-    - ((az3))
+    - ((region))-a
+    - ((region))-b
+    - ((region))-c
   .properties.plan2_selector:
     value: Inactive
   .properties.plan3_selector:
     value: Inactive
   .properties.global_recipient_email:
-    value: anything@pivotal.io
+    value: fbloggs@gmail.com    
   .properties.backups_selector:
     value: GCS
   .properties.backups_selector.gcs.project_id:
-    value: 123
+    value: ((gcp-project-id))
   .properties.backups_selector.gcs.bucket_name:
-    value: 123
+    value: ((gcp-project-id))-mysql-backups
   .properties.backups_selector.gcs.service_account_json:
     value:
       secret: '"this_is": "dummy_json"'

@@ -1,0 +1,7 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: p-spring-cloud-services-*.pivotal
+pivnet-product-slug: p-spring-cloud-services
+#product-version-regex: 2\.0\.(.*)
+product-version-regex: 2\.0\.4
+stemcell-iaas: google

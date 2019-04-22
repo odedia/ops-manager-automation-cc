@@ -2,6 +2,5 @@
 pivnet-api-token: ((pivnet-api-token))
 pivnet-file-glob: pivotal-container-service-*.pivotal
 pivnet-product-slug: pivotal-container-service
-#product-version-regex: 1\.3\.(.*)
-product-version-regex: 1\.3\.5
-stemcell-iaas: aws
+product-version-regex: 1\.3\.(.*)
+stemcell-iaas: google

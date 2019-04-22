@@ -2,5 +2,5 @@
 pivnet-api-token: ((pivnet-api-token))
 pivnet-file-glob: srt-*.pivotal
 pivnet-product-slug: cf
-product-version-regex: 2\.4\.(.*)
-stemcell-iaas: aws
+product-version-regex: 2\.5\.(.*)
+stemcell-iaas: google

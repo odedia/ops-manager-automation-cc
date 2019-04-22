@@ -1,0 +1,37 @@
+product-name: pas-windows
+product-properties:
+  .properties.bosh_ssh_enabled:
+    value: true 
+  .properties.enable_cf_metric_name:
+    value: false
+  .properties.kms:
+    value: disable
+  .properties.rdp_enabled:
+    value: false
+  .properties.smoke_tests_windows:
+    value: on_demand
+  .properties.system_logging:
+    value: disable
+  .properties.windows_admin_password:
+    value: use_default
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
+  singleton_availability_zone:
+    name: ((az3))
+resource-config:
+  windows_diego_cell:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+errand-config:
+  install-hwc-buildpack:
+    post-deploy-state: true
+  smoke_tests_windows:
+    post-deploy-state: false
+

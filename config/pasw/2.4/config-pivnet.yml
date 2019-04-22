@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: pas-windows-*.pivotal
+pivnet-product-slug: pas-windows
+product-version-regex: 2\.4\.(.*)
+stemcell-iaas: google

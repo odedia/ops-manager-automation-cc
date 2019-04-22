@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: jenkins-*.pivotal
+pivnet-product-slug: jenkins
+product-version-regex: 1\.0\.(.*)
+stemcell-iaas: google

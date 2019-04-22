@@ -2,13 +2,13 @@
 product-name: harbor-container-registry
 network-properties:
   network:
-    name: services 
+    name: services
   other_availability_zones:
-  - name: ((az1))
-  - name: ((az2))
-  - name: ((az3))
+  - name: ((region))-a
+  - name: ((region))-b
+  - name: ((region))-c
   singleton_availability_zone:
-    name: ((az1))
+    name: ((region))-a
 product-properties:
   .properties.admin_password:
     value:
@@ -33,7 +33,7 @@ product-properties:
       cert_pem: ((domain-crt))
       private_key_pem: ((domain-key))
   .properties.server_cert_ca:
-    value: ((domain-crt-ca))
+    value: ((domain-crt))
   .properties.with_clair:
     value: true
   .properties.with_notary:

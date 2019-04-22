@@ -5,32 +5,21 @@ resource_types:
   source:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
+- name: gcs
+  type: docker-image
+  source:
+    repository: frodenas/gcs-resource
 
 resources:
-- name: daily-trigger
+- name: every-two-days
   type: time
   source:
-    interval: 24h
-
-- name: one-time-trigger
-  type: time
-  source:
-    interval: 999999h
-
+    interval: 48h
 - name: config
   type: git
   source:
     uri: ((config-uri))
     branch: master
-
-- name: state
-  type: s3
-  source:
-    versioned_file: state.yml
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
 
 - name: platform-automation-pivnet
   type: pivnet
@@ -39,84 +28,214 @@ resources:
     product_slug: platform-automation
     product_version: 2\.(.*)
     sort_by: semver
-
 - name: opsman-product
-  type: s3
+  type: gcs
   source:
-    regexp: OpsManager(.*)onAWS.yml
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
-    bucket: ((s3-bucket))
+    regexp: ops-manager-gcp-(.*).yml
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 - name: pks-product
-  type: s3
+  type: gcs
   source:
     regexp: pivotal-container-service-(.*).pivotal
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 - name: pks-stemcell
-  type: s3
+  type: gcs
   source:
-    regexp: pks-stemcell/light-bosh-stemcell-(.*)-aws.*\.tgz
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    regexp: pks-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 - name: harbor-product
-  type: s3
+  type: gcs
   source:
     regexp: harbor-container-registry-(.*).pivotal
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 - name: harbor-stemcell
-  type: s3
+  type: gcs
   source:
-    regexp: harbor-stemcell/light-bosh-stemcell-(.*)-aws.*\.tgz
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    regexp: harbor-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: rabbitmq-product
+  type: gcs
+  source:
+    regexp: p-rabbitmq-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: rabbitmq-stemcell
+  type: gcs
+  source:
+    regexp: rabbitmq-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: scs-product
+  type: gcs
+  source:
+    regexp: p-spring-cloud-services-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: scs-stemcell
+  type: gcs
+  source:
+    regexp: rabbitmq-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: redis-product
+  type: gcs
+  source:
+    regexp: p-redis-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: redis-stemcell
+  type: gcs
+  source:
+    regexp: redis-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: jenkins-product
+  type: gcs
+  source:
+    regexp: jenkins-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: jenkins-stemcell
+  type: gcs
+  source:
+    regexp: jenkins-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+
+- name: pasw-product
+  type: gcs
+  source:
+    regexp: pas-windows-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: pasw-stemcell
+  type: gcs
+  source:
+    regexp: pasw-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: pas-product
+  type: gcs
+  source:
+    regexp: srt-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: pas-stemcell
+  type: gcs
+  source:
+    regexp: pas-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: healthwatch-product
+  type: gcs
+  source:
+    regexp: p-healthwatch-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: healthwatch-stemcell
+  type: gcs
+  source:
+    regexp: healthwatch-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: mysql-product
+  type: gcs
+  source:
+    regexp: pivotal-mysql-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: mysql-stemcell
+  type: gcs
+  source:
+    regexp: mysql-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: pcfmetrics-product
+  type: gcs
+  source:
+    regexp: apm-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: pcfmetrics-stemcell
+  type: gcs
+  source:
+    regexp: pcfmetrics-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
 
 - name: platform-automation-tasks
-  type: s3
+  type: gcs
   source:
     regexp: platform-automation-tasks-(.*).zip
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 - name: platform-automation-image
-  type: s3
+  type: gcs
   source:
     regexp: platform-automation-image-(.*).tgz
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
-
-- name: installation
-  type: s3
-  source:
-    regexp: installations/installation-(.*).zip
-    bucket: ((s3-bucket))
-    access_key_id: ((aws-access-key-id))
-    region_name: ((region))
-    secret_access_key: ((aws-secret-access-key))
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
 
 jobs:
 - name: fetch-opsman
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
-    - get: daily-trigger
+    - get: every-two-days
       trigger: true
     - get: platform-automation-image
       params:
@@ -143,16 +262,17 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-pivnet.yml
+      CONFIG_FILE: config/ops-manager/2.5/gcp/config-pivnet.yml
   - aggregate:
     - put: opsman-product
       params:
         file: downloaded-product/*
 
 - name: fetch-pks
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
-    - get: daily-trigger
+    - get: every-two-days
       trigger: true
     - get: platform-automation-image
       params:
@@ -191,9 +311,10 @@ jobs:
 
 
 - name: fetch-harbor
+  serial_groups: [ fetch-tiles ]
   plan:
   - aggregate:
-    - get: daily-trigger
+    - get: every-two-days
       trigger: true
     - get: platform-automation-image
       params:
@@ -230,6 +351,378 @@ jobs:
       params:
         file: harbor-stemcell/*.tgz
 
+- name: fetch-pas
+  serial_groups: [ fetch-ops ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-pas-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/cf/2.5/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: pas-stemcell}
+  - aggregate:
+    - put: pas-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: pas-stemcell
+      params:
+        file: pas-stemcell/*.tgz
+
+- name: fetch-healthwatch
+  serial_groups: [ fetch-ops ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-healthwatch-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/p-healthwatch/1.4/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: healthwatch-stemcell}
+  - aggregate:
+    - put: healthwatch-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: healthwatch-stemcell
+      params:
+        file: healthwatch-stemcell/*.tgz
+
+- name: fetch-jenkins
+  serial_groups: [ fetch-tiles-1 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-jenkins-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/jenkins/1.0/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: jenkins-stemcell}
+  - aggregate:
+    - put: jenkins-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: jenkins-stemcell
+      params:
+        file: jenkins-stemcell/*.tgz
+
+
+- name: fetch-redis
+  serial_groups: [ fetch-tiles-2 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-redis-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/p-redis/2.0/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: redis-stemcell}
+  - aggregate:
+    - put: redis-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: redis-stemcell
+      params:
+        file: redis-stemcell/*.tgz
+
+- name: fetch-rabbitmq
+  serial_groups: [ fetch-tiles-3 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-rabbitmq-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/p-rabbitmq/1.15/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: rabbitmq-stemcell}
+  - aggregate:
+    - put: rabbitmq-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: rabbitmq-stemcell
+      params:
+        file: rabbitmq-stemcell/*.tgz
+
+- name: fetch-scs
+  serial_groups: [ fetch-tiles-1 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-scs-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/p-scs/2.0/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: scs-stemcell}
+  - aggregate:
+    - put: scs-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: scs-stemcell
+      params:
+        file: scs-stemcell/*.tgz
+
+- name: fetch-pasw
+  serial_groups: [ fetch-tiles-2 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-pasw-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/pasw/2.4/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: pasw-stemcell}
+  - aggregate:
+    - put: pasw-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: pasw-stemcell
+      params:
+        file: pasw-stemcell/*.tgz
+
+- name: fetch-pcfmetrics
+  serial_groups: [ fetch-tiles-3 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-pcfmetrics-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/pcfmetrics/1.6/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: pcfmetrics-stemcell}
+  - aggregate:
+    - put: pcfmetrics-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: pcfmetrics-stemcell
+      params:
+        file: pcfmetrics-stemcell/*.tgz
+
+- name: fetch-mysql
+  serial_groups: [ fetch-tiles-1 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-mysql-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/pivotal-mysql/2.5/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: mysql-stemcell}
+  - aggregate:
+    - put: mysql-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: mysql-stemcell
+      params:
+        file: mysql-stemcell/*.tgz
+
+
+
 - name: fetch-platform-automation
   # We use the pivnet resource to bootstrap the pipeline,
   # and because this product is part of the pipeline, not the foundation
@@ -243,427 +736,3 @@ jobs:
     - put: platform-automation-image
       params:
         file: platform-automation-pivnet/*image*.tgz
-
-- name: install-opsman
-  serial: true
-  serial_groups: [ install ]
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-    - get: one-time-trigger
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: opsman-product
-    - get: config
-    - get: state
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: create-vm
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/create-vm.yml
-    input_mapping:
-      image: opsman-product
-      state: state
-      config: config
-      vars: config
-    params:
-      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-vm.yml
-  - put: state
-    params:
-      file: generated-state/state.yml
-  - task: configure-authentication
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-authentication.yml
-    attempts: 10
-    input_mapping:
-      env: config
-      config: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-      AUTH_CONFIG_FILE: config/ops-manager/auth.yml
-  - task: configure-director
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-director.yml
-    input_mapping:
-      config: config
-      env: config
-      vars: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-      DIRECTOR_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config.yml
-  - task: apply-director-changes
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/apply-director-changes.yml
-    input_mapping:
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: export-installation
-  serial: true
-  plan:
-  - aggregate:
-    - get: one-time-trigger
-      passed: [ install-opsman ]
-    - get: daily-trigger
-      trigger: true
-    - get: platform-automation-image
-      params:
-        unpack: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: export-installation
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/export-installation.yml
-    input_mapping:
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-      INSTALLATION_FILE: installation-$timestamp.zip
-  - put: installation
-    params:
-      file: installation/installation*.zip
-
-- name: upgrade-opsman
-  serial: true
-  serial_groups: [ install ]
-  plan:
-  - aggregate:
-    - get: one-time-trigger
-      passed: [ install-opsman ]
-    - get: platform-automation-image
-      params:
-        unpack: true
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: opsman-product
-    - get: installation
-      passed: [ export-installation ]
-    - get: config
-    - get: state
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: upgrade-opsman
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upgrade-opsman.yml
-    input_mapping:
-      image: opsman-product
-      state: state
-      config: config
-      env: config
-      vars: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-      OPSMAN_CONFIG_FILE: config/ops-manager/2.4/aws/((product-slug))/config-vm.yml
-  - put: state
-    params:
-      file: generated-state/state.yml
-  - task: apply-director-changes
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/apply-director-changes.yml
-    input_mapping:
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: upload-and-stage-pks
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - upgrade-opsman
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: pks-product
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: upload-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-product.yml
-    input_mapping:
-      product: pks-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-  - task: stage-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/stage-product.yml
-    input_mapping:
-      product: pks-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: upload-and-stage-harbor
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - upgrade-opsman
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: harbor-product
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: upload-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-product.yml
-    input_mapping:
-      product: harbor-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-  - task: stage-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/stage-product.yml
-    input_mapping:
-      product: harbor-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: configure-pks
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - upload-and-stage-pks
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: configure-pks
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-product.yml
-    input_mapping:
-      config: config
-      env: config
-      vars: config
-    params:
-      CONFIG_FILE: config/pivotal-container-service/1.3/config.yml
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: configure-harbor
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - upload-and-stage-harbor
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: configure-harbor
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-product.yml
-    input_mapping:
-      config: config
-      env: config
-      vars: config
-    params:
-      CONFIG_FILE: config/harbor-container-registry/1.7/config.yml
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: upload-stemcells
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - upgrade-opsman
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: pks-stemcell
-      trigger: true
-    - get: harbor-stemcell
-      trigger: true
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: upload-pks-stemcell
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-stemcell.yml
-    input_mapping:
-      env: config
-      stemcell: pks-stemcell
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-  - task: upload-harbor-stemcell
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-stemcell.yml
-    input_mapping:
-      env: config
-      stemcell: harbor-stemcell
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-
-- name: apply-product-changes
-  serial: true
-  plan:
-  - aggregate:
-    - get: platform-automation-image
-      params:
-        unpack: true
-      passed:
-        - configure-pks
-        - configure-harbor
-      trigger: true
-    - get: platform-automation-tasks
-      params:
-        unpack: true
-    - get: config
-  - task: credhub-interpolate-config
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CA_CERT: ((credhub-ca-cert))
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      PREFIX: /
-      INTERPOLATION_PATH: config
-    input_mapping:
-      files: config
-    output_mapping:
-      interpolated-files: config
-  - task: apply-product-changes
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/apply-changes.yml
-    input_mapping:
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml

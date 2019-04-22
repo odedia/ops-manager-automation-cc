@@ -1,0 +1,35 @@
+product-name: jenkins
+product-properties:
+  .properties.allow_paid_service_plans:
+    value: false
+  .properties.apply_open_security_group:
+    value: false
+  .properties.org:
+    value: jenkins-org
+  .properties.space:
+    value: jenkins-space
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: ((az1)) 
+  - name: ((az2))
+  - name: ((az3))
+  singleton_availability_zone:
+    name: ((az2))
+resource-config:
+  jenkins-docker-cloud:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  jenkins_master:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+

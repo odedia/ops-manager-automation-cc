@@ -1,11 +1,11 @@
 product-name: cf
 network-properties:
   singleton_availability_zone:
-    name: eu-west-2
+    name: ((region))-a
   other_availability_zones:
-  - name: eu-west-2a
-  - name: eu-west-2b
-  - name: eu-west-2c
+  - name: ((region))-a
+  - name: ((region))-b
+  - name: ((region))-c
   network:
     name: pas
 product-properties:
@@ -13,6 +13,8 @@ product-properties:
     value: sys.((subdomain-name)).((domain-name))
   .cloud_controller.apps_domain:
     value: apps.((subdomain-name)).((domain-name))
+  .properties.stack_migration_acknowledgement  :
+    value: X
   .properties.networking_poe_ssl_certs:
     value:
     - name: certificate
@@ -36,10 +38,10 @@ product-properties:
         secret: ((om-password))
       primary: true
   .mysql_monitor.recipient_email:
-    value: anything@pivotal.io
+    value: fbloggs@gmail.com
 errand-config:
   deploy-autoscaler:
-    post-deploy-state: true
+    post-deploy-state: false
   deploy-notifications:
     post-deploy-state: false
   deploy-notifications-ui:
@@ -47,7 +49,7 @@ errand-config:
   nfsbrokerpush:
     post-deploy-state: false
   test-autoscaling:
-    post-deploy-state: true
+    post-deploy-state: false
 resource-config:
   compute:
     instances: 3
