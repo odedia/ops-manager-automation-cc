@@ -83,3 +83,6 @@ properties-configuration:
 resource-configuration:
   compilation:
     instances: 8
+    instance_type:
+      id: medium.disk
+
