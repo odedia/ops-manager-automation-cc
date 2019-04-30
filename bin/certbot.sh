@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo certbot --agree-tos -m ${MY_EMAIL} \
+sudo certbot --agree-tos -m ${EMAIL} \
   certonly --cert-name  ${DOMAIN}  \
   --dns-google \
   -d "${DOMAIN}, *.${DOMAIN}, *.apps.${DOMAIN}, *.sys.${DOMAIN}, *.login.sys.${DOMAIN}, *.uaa.sys.${DOMAIN}, *.pks.${DOMAIN}" \
