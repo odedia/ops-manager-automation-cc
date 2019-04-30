@@ -84,5 +84,5 @@ resource-configuration:
   compilation:
     instances: 8
     instance_type:
-      id: medium.disk
+      id: large.disk
 
