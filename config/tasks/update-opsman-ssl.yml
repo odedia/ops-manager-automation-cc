@@ -4,8 +4,6 @@ platform: linux
 inputs:
 - name: env # contains the env file with target OpsMan Information
 params:
-  DOMAIN_CERT:
-  DOMAIN_PRIVATE_KEY:
   ENV_FILE: env.yml
 run:
   path: bash
@@ -14,4 +12,4 @@ run:
   - |
     set -eu
     cat /var/version && echo ""
-    om --env env/"${ENV_FILE}" update-ssl-certificate --certificate-pem="${DOMAIN_CERT}" --private-key-pem="${DOMAIN_PRIVATE_KEY}"
+    om --env env/"${ENV_FILE}" update-ssl-certificate --certificate-pem="((domain-crt))" --private-key-pem="((domain-key))"

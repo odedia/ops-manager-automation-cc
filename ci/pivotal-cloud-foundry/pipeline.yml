@@ -413,8 +413,6 @@ jobs:
       vars: config
     params:
       ENV_FILE: config/ops-manager/env.yml
-      DOMAIN_CERT: ((domain-crt))
-      DOMAIN_PRIVATE_KEY: ((domain-key))
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
