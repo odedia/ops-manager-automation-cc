@@ -6,6 +6,3 @@ sudo certbot --agree-tos -m ${EMAIL} \
   --dns-google-credentials /home/ubuntu/gcp_credentials.json \
   --dns-google-propagation-seconds 60
 
-mkdir -p /home/ubuntu/certs/${DOMAIN}
-sudo cp /etc/letsencrypt/live/${DOMAIN}/privkey.pem /home/ubuntu/certs/${DOMAIN}/
-sudo cp /etc/letsencrypt/live/${DOMAIN}/fullchain.pem  /home/ubuntu/certs/${DOMAIN}/
