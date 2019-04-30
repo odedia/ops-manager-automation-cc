@@ -405,7 +405,7 @@ jobs:
       file: generated-state/state.yml
   - task: update-ssl-certificate
     image: platform-automation-image
-    file: config/tasks/update-opsman-ssl.yml
+    file: config/config/tasks/update-opsman-ssl.yml
     input_mapping:
       state: state
       config: config
