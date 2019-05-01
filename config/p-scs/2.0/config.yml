@@ -54,5 +54,5 @@ errand-config:
   register-service-broker:
     post-deploy-state: true
   run-smoke-tests:
-    post-deploy-state: false
+    post-deploy-state: true
 

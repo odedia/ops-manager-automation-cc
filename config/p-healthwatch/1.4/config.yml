@@ -1,11 +1,11 @@
 product-name: p-healthwatch
 network-properties:
   singleton_availability_zone:
-    name: ((region))-a
+    name: ((az3))
   other_availability_zones:
-  - name: ((region))-a
-  - name: ((region))-b
-  - name: ((region))-c
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
   network:
     name: pas
   service_network:
@@ -14,7 +14,7 @@ product-properties:
   .properties.opsman:
     value: enable
   .properties.opsman.enable.url:
-    value: https://pcf.((subdomain-name)).((domain-name))
+    value: https://opsman.((subdomain-name)).((domain-name))
   .healthwatch-forwarder.health_check_az:
     value: ((region))-a
   .properties.boshtasks:

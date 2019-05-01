@@ -4,11 +4,11 @@ network-properties:
   network:
     name: services
   other_availability_zones:
-  - name: ((region))-a
-  - name: ((region))-b
-  - name: ((region))-c
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
   singleton_availability_zone:
-    name: ((region))-a
+    name: ((az2))
 product-properties:
   .properties.admin_password:
     value:

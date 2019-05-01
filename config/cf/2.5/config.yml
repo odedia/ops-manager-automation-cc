@@ -1,11 +1,11 @@
 product-name: cf
 network-properties:
   singleton_availability_zone:
-    name: ((region))-a
+    name: ((az1))
   other_availability_zones:
-  - name: ((region))-a
-  - name: ((region))-b
-  - name: ((region))-c
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
   network:
     name: pas
 product-properties:
@@ -51,7 +51,7 @@ errand-config:
   test-autoscaling:
     post-deploy-state: false
   smoke_tests:
-    post-deploy-state: false
+    post-deploy-state: true
   push-apps-manager:
     post-deploy-state: true
   push-usage-service:

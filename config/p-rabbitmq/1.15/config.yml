@@ -129,7 +129,7 @@ errand-config:
   register-broker:
     post-deploy-state: true
   smoke-tests:
-    post-deploy-state: false
+    post-deploy-state: true
   upgrade-all-service-instances:
     post-deploy-state: true
 

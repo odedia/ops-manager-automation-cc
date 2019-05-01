@@ -2,11 +2,11 @@
 product-name: pivotal-container-service
 network-properties:
   singleton_availability_zone:
-    name: ((region))-a
+    name: ((az3))
   other_availability_zones:
-  - name: ((region))-a
-  - name: ((region))-b
-  - name: ((region))-c
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
   network:
     name: pas
   service_network:
@@ -20,14 +20,14 @@ product-properties:
     value: api.((subdomain-name)).((domain-name))
   .properties.plan1_selector.active.master_az_placement:
     value:
-    - ((region))-a
-    - ((region))-b
-    - ((region))-c
+    - ((az1))
+    - ((az2))
+    - ((az3))
   .properties.plan1_selector.active.worker_az_placement:
     value:
-    - ((region))-a
-    - ((region))-b
-    - ((region))-c
+    - ((az1))
+    - ((az2))
+    - ((az3))
   .properties.plan1_selector.active.worker_instances:
     value: 1
   .properties.plan2_selector:
@@ -51,9 +51,9 @@ product-properties:
     value: disabled
 errand-config:
   upgrade-all-service-instances:
-    post-deploy-state: false
+    post-deploy-state: true
   smoke-tests:
-    post-deploy-state: false
+    post-deploy-state: true
 resource-config:
   pivotal-container-service:
     elb_names:
