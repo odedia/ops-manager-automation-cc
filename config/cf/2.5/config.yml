@@ -51,7 +51,7 @@ errand-config:
   test-autoscaling:
     post-deploy-state: false
   smoke_tests:
-    post-deploy-state: true
+    post-deploy-state: false
   push-apps-manager:
     post-deploy-state: true
   push-usage-service:
