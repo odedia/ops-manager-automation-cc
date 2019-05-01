@@ -66,5 +66,5 @@ errand-config:
   push-apps:
     post-deploy-state: true
   smoke-tests:
-    post-deploy-state: true
+    post-deploy-state: false
 

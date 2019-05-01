@@ -20,6 +20,8 @@ product-properties:
   .properties.boshtasks:
     value: disable
 errand-config:
+  smoke-tests:
+    post-deploy-state: true
 resource-config:
   mysql:
     instances: 1
