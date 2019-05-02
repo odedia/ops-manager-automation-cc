@@ -468,9 +468,6 @@ jobs:
       env: config
     params:
       ENV_FILE: config/ops-manager/env.yml
-  - task: trigger-config
-    image: platform-automation-image
-    put: platform-automation-image
 
 - name: upload-and-stage-harbor
   serial: true
@@ -970,6 +967,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: pks-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
