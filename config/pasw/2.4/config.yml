@@ -25,7 +25,7 @@ network-properties:
     name: ((az3))
 resource-config:
   windows_diego_cell:
-    instances: automatic
+    instances: 1
     instance_type:
       id: automatic
     internet_connected: true
