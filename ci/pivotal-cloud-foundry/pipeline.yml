@@ -952,6 +952,9 @@ jobs:
     params:
       ENV_FILE: config/ops-manager/env.yml
 
+
+# CONFIGURARTIONS
+
 - name: configure-pks
   serial: true
   serial_groups: [ staged-config ]
@@ -1011,6 +1014,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: harbor-product
+      passed:
+        - upload-and-stage-harbor
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1051,6 +1058,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: pas-product
+      passed:
+        - upload-and-stage-pas
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1091,6 +1102,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: healthwatch-product
+      passed:
+        - upload-and-stage-healthwatch
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1131,6 +1146,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: jenkins-product
+      passed:
+        - upload-and-stage-jenkins
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1171,6 +1190,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: rabbitmq-product
+      passed:
+        - upload-and-stage-rabbitmq
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1211,6 +1234,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: redis-product
+      passed:
+        - upload-and-stage-redis
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1252,6 +1279,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: scs-product
+      passed:
+        - upload-and-stage-scs
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1292,6 +1323,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: pasw-product
+      passed:
+        - upload-and-stage-pasw
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1332,6 +1367,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: pcfmetrics-product
+      passed:
+        - upload-and-stage-pcfmetrics
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -1373,6 +1412,10 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: mysql-product
+      passed:
+        - upload-and-stage-mysql
+      trigger: true
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
