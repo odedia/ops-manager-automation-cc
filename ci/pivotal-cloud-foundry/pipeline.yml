@@ -1589,6 +1589,24 @@ jobs:
         - configure-healthwatch
         - upload-stemcells
       trigger: true
+    - get: pks-product
+      params:
+        unpack: true
+      passed:
+        - configure-pks
+        - configure-harbor
+        - configure-pas
+        - configure-pasw
+        - configure-scs
+        - configure-mysql
+        - configure-redis
+        - configure-jenkins
+        - configure-rabbitmq
+        - configure-pcfmetrics
+        - configure-healthwatch
+        - upload-stemcells
+      trigger: true
+
     - get: platform-automation-tasks
       params:
         unpack: true
