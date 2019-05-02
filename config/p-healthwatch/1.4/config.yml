@@ -21,7 +21,7 @@ product-properties:
     value: disable
 errand-config:
   smoke-tests:
-    post-deploy-state: true
+    post-deploy-state: false
 resource-config:
   mysql:
     instances: 1
