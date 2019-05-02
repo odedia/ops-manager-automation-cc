@@ -423,7 +423,7 @@ jobs:
 
 - name: upload-and-stage-pks
   serial: true
-  serial_groups: [ staged-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -436,6 +436,7 @@ jobs:
       params:
         unpack: true
     - get: pks-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -470,7 +471,7 @@ jobs:
 
 - name: upload-and-stage-harbor
   serial: true
-  serial_groups: [ pks-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -483,6 +484,7 @@ jobs:
       params:
         unpack: true
     - get: harbor-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -517,7 +519,7 @@ jobs:
 
 - name: upload-and-stage-pas
   serial: true
-  serial_groups: [ pas-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -530,6 +532,7 @@ jobs:
       params:
         unpack: true
     - get: pas-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -564,7 +567,7 @@ jobs:
 
 - name: upload-and-stage-healthwatch
   serial: true
-  serial_groups: [ pas-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -577,6 +580,7 @@ jobs:
       params:
         unpack: true
     - get: healthwatch-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -611,7 +615,7 @@ jobs:
 
 - name: upload-and-stage-jenkins
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -624,6 +628,7 @@ jobs:
       params:
         unpack: true
     - get: jenkins-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -658,7 +663,7 @@ jobs:
 
 - name: upload-and-stage-rabbitmq
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -671,6 +676,7 @@ jobs:
       params:
         unpack: true
     - get: rabbitmq-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -706,7 +712,7 @@ jobs:
 
 - name: upload-and-stage-redis
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -719,6 +725,7 @@ jobs:
       params:
         unpack: true
     - get: redis-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -754,7 +761,7 @@ jobs:
 
 - name: upload-and-stage-scs
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -767,6 +774,7 @@ jobs:
       params:
         unpack: true
     - get: scs-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -801,7 +809,7 @@ jobs:
 
 - name: upload-and-stage-pasw
   serial: true
-  serial_groups: [ pas-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -814,6 +822,7 @@ jobs:
       params:
         unpack: true
     - get: pasw-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -848,7 +857,7 @@ jobs:
 
 - name: upload-and-stage-pcfmetrics
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -861,6 +870,7 @@ jobs:
       params:
         unpack: true
     - get: pcfmetrics-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
@@ -896,7 +906,7 @@ jobs:
 
 - name: upload-and-stage-mysql
   serial: true
-  serial_groups: [ services-uploads ]
+  serial_groups: [ tile-uploads ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -909,6 +919,7 @@ jobs:
       params:
         unpack: true
     - get: mysql-product
+      trigger: true
     - get: config
   - task: credhub-interpolate-config
     image: platform-automation-image
