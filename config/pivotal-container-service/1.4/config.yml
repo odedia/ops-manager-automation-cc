@@ -53,7 +53,7 @@ errand-config:
   upgrade-all-service-instances:
     post-deploy-state: true
   smoke-tests:
-    post-deploy-state: true
+    post-deploy-state: false
 resource-config:
   pivotal-container-service:
     elb_names:
