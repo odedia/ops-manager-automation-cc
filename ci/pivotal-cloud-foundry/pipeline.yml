@@ -978,7 +978,7 @@ jobs:
       env: config
       vars: config
     params:
-      CONFIG_FILE: config/pivotal-container-service/1.3/config.yml
+      CONFIG_FILE: config/pivotal-container-service/1.4/config.yml
       ENV_FILE: config/ops-manager/env.yml
 
 - name: configure-harbor
