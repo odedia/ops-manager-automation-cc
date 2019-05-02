@@ -468,6 +468,8 @@ jobs:
       env: config
     params:
       ENV_FILE: config/ops-manager/env.yml
+  - task: trigger-config
+    image: platform-automation-image
     put: platform-automation-image
 
 - name: upload-and-stage-harbor
