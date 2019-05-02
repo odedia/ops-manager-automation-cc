@@ -1658,47 +1658,47 @@ jobs:
 
     - get: pks-product
       passed:
-        - upload-and-stage-pks
+        - configure-pks
       trigger: true
     - get: harbor-product
       passed:
-        - upload-and-stage-pks
+        - configure-harbor
       trigger: true
     - get: pas-product
       passed:
-        - upload-and-stage-pks
+        - configure-pas
       trigger: true
     - get: pasw-product
       passed:
-        - upload-and-stage-pks
+        - configure-pasw
       trigger: true
     - get: scs-product
       passed:
-        - upload-and-stage-pks
+        - configure-scs
       trigger: true
     - get: mysql-product
       passed:
-        - upload-and-stage-pks
+        - configure-mysql
       trigger: true
     - get: redis-product
       passed:
-        - upload-and-stage-pks
+        - configure-redis
       trigger: true
     - get: jenkins-product
       passed:
-        - upload-and-stage-pks
+        - configure-jenkins
       trigger: true
     - get: rabbitmq-product
       passed:
-        - upload-and-stage-pks
+        - configure-rabbitmq
       trigger: true
     - get: pcfmetrics-product
       passed:
-        - upload-and-stage-pks
+        - configure-pcfmetrics
       trigger: true
     - get: healthwatch-product
       passed:
-        - upload-and-stage-pks
+        - configure-healthwatch
       trigger: true
 
     - get: platform-automation-tasks
