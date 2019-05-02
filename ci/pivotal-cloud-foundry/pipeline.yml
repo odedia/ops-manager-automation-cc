@@ -1595,6 +1595,111 @@ jobs:
       passed:
         - upload-stemcells
       trigger: true
+    - get: harbor-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: pas-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: pasw-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: scs-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: mysql-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: redis-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: jenkins-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: rabbitmq-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: pcfmetrics-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+    - get: healthwatch-stemcell
+      params:
+        unpack: true
+      passed:
+        - upload-stemcells
+      trigger: true
+
+    - get: pks-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: harbor-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: pas-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: pasw-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: scs-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: mysql-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: redis-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: jenkins-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: rabbitmq-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: pcfmetrics-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
+    - get: healthwatch-product
+      passed:
+        - upload-and-stage-pks
+      trigger: true
 
     - get: platform-automation-tasks
       params:
@@ -1621,3 +1726,7 @@ jobs:
       env: config
     params:
       ENV_FILE: config/ops-manager/env.yml
+
+
+
+
