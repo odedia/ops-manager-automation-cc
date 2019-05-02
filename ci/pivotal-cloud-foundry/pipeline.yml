@@ -43,7 +43,7 @@ resources:
 - name: pks-product
   type: gcs
   source:
-    regexp: pivotal-container-service-(.*).pivotal
+    regexp: pivotal-container-services-(.*).pivotal
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
