@@ -23,7 +23,7 @@ product-properties:
   .properties.customize_container_network:
     value: default
   .properties.hostname:
-    value: harbor.((subdomain-name)).((domain-name))
+    value: harbor.pks.((subdomain-name)).((domain-name))
   .properties.no_proxy:
     value: 127.0.0.1,localhost,ui,registry
   .properties.registry_storage:

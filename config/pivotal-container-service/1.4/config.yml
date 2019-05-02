@@ -17,7 +17,7 @@ product-properties:
       cert_pem: ((domain-crt))
       private_key_pem: ((domain-key))
   .properties.pks_api_hostname:
-    value: api.((subdomain-name)).((domain-name))
+    value: api.pks.((subdomain-name)).((domain-name))
   .properties.plan1_selector.active.master_az_placement:
     value:
     - ((az1))
