@@ -2,7 +2,7 @@
 product-name: harbor-container-registry
 network-properties:
   network:
-    name: services
+    name: pks-services
   other_availability_zones:
   - name: ((az1))
   - name: ((az2))

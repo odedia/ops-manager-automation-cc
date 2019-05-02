@@ -8,7 +8,7 @@ network-properties:
   - name: ((az2))
   - name: ((az3))
   network:
-    name: pas
+    name: pks
   service_network:
     name: services
 product-properties:

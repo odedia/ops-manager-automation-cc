@@ -1,8 +1,8 @@
 ---
 az-configuration:
-- name: ((region))-a
-- name: ((region))-b
-- name: ((region))-c
+- name: ((az1))
+- name: ((az2))
+- name: ((az3))
 network-assignment:
   network:
     name: infrastructure
@@ -19,31 +19,31 @@ networks-configuration:
       gateway: 10.0.0.1
       reserved_ip_ranges: 10.0.0.1-10.0.0.9
       availability_zone_names:
-      - ((region))-a
-      - ((region))-b
-      - ((region))-c
-  # - name: pks
-  #   subnets:
-  #   - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-subnet/((region))
-  #     cidr: 10.0.10.0/24
-  #     dns: 169.254.169.254
-  #     gateway: 10.0.10.1
-  #     reserved_ip_ranges: 10.0.10.1-10.0.10.9
-  #     availability_zone_names:
-  #     - ((region))-a
-  #     - ((region))-b
-  #     - ((region))-c
-  # - name: pks-services
-  #   subnets:
-  #   - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-services-subnet/((region))
-  #     cidr: 10.0.11.0/24
-  #     dns: 169.254.169.254
-  #     gateway: 10.0.11.1
-  #     reserved_ip_ranges: 10.0.11.1-10.0.11.9
-  #     availability_zone_names:
-  #     - ((region))-a
-  #     - ((region))-b
-  #     - ((region))-c
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: pks
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-subnet/((region))
+      cidr: 10.0.10.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.10.1
+      reserved_ip_ranges: 10.0.10.1-10.0.10.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: pks-services
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-services-subnet/((region))
+      cidr: 10.0.11.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.11.1
+      reserved_ip_ranges: 10.0.11.1-10.0.11.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
   - name: pas
     subnets:
     - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pas-subnet/((region))
@@ -52,9 +52,9 @@ networks-configuration:
       gateway: 10.0.4.1
       reserved_ip_ranges: 10.0.4.1-10.0.4.9
       availability_zone_names:
-      - ((region))-a
-      - ((region))-b
-      - ((region))-c
+      - ((az1))
+      - ((az2))
+      - ((az3))
   - name: services
     subnets:
     - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-services-subnet/((region))
@@ -63,9 +63,9 @@ networks-configuration:
       gateway: 10.0.8.1
       reserved_ip_ranges: 10.0.8.1-10.0.8.9
       availability_zone_names:
-      - ((region))-a
-      - ((region))-b
-      - ((region))-c
+      - ((az1))
+      - ((az2))
+      - ((az3))
 properties-configuration:
   director_configuration:
     ntp_servers_string: metadata.google.internal
