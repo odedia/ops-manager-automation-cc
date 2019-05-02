@@ -1589,11 +1589,10 @@ jobs:
         - configure-healthwatch
         - upload-stemcells
       trigger: true
-    - get: pks-product
+    - get: pks-stemcell
       params:
         unpack: true
       passed:
-        - configure-pks
         - upload-stemcells
       trigger: true
 
