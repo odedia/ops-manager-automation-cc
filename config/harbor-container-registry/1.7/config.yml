@@ -51,6 +51,8 @@ resource-config:
     instance_type:
       id: automatic
     internet_connected: true
+    elb_names:
+    - tcp:((subdomain-name))-cf-pks-harbor
   smoke-testing:
     instances: automatic
     instance_type:
