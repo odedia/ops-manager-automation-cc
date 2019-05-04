@@ -547,7 +547,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/p-rabbitmq/1.15/config-pivnet.yml
+      CONFIG_FILE: config/p-rabbitmq/1.16/config-pivnet.yml
     output_mapping: {downloaded-stemcell: rabbitmq-stemcell}
   - aggregate:
     - put: rabbitmq-product
