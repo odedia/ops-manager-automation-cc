@@ -909,7 +909,7 @@ jobs:
       interpolated-files: config
   - task: apply-product-changes
     image: platform-automation-image
-    file: platform-automation-tasks/tasks/test.yml
+    file: platform-automation-tasks/tasks/apply-changes.yml
     input_mapping:
       env: config
     params:
