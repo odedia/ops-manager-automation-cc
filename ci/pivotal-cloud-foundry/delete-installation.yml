@@ -27,15 +27,6 @@ resources:
       ((gcp-credentials))
 
 
-- name: opsman-product
-  type: gcs
-  source:
-    regexp: ops-manager-gcp-(.*).yml
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
-
-
 - name: platform-automation-tasks
   type: gcs
   source:
@@ -65,6 +56,7 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: one-time-trigger
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -102,6 +94,7 @@ jobs:
       params:
         unpack: true
     - get: config
+    - get: state
   - task: credhub-interpolate-config
     image: platform-automation-image
     file: platform-automation-tasks/tasks/credhub-interpolate.yml
@@ -121,8 +114,7 @@ jobs:
     file: platform-automation-tasks/tasks/delete-vm.yml
     input_mapping:
       env: config
+      state: state
     params:
       ENV_FILE: config/ops-manager/env.yml
-
-
-
+    - put: state
