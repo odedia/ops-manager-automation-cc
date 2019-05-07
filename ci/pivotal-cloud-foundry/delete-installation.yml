@@ -110,7 +110,7 @@ jobs:
       files: config
     output_mapping:
       interpolated-files: config
-  - task: delete-installation
+  - task: delete-opsman-vm
     image: platform-automation-image
     file: platform-automation-tasks/tasks/delete-vm.yml
     input_mapping:
@@ -119,3 +119,6 @@ jobs:
     params:
       STATE_FILE: state.yml
       OPSMAN_CONFIG_FILE: config/ops-manager/2.5/gcp/config-vm.yml
+  - put: state
+    params:
+      file: generated-state/state.yml
