@@ -52,14 +52,6 @@ resources:
     json_key: |
       ((gcp-credentials))
 
-- name: installation
-  type: gcs
-  source:
-    regexp: installations/installation-(.*).zip
-    bucket: ((gcs-bucket))
-    json_key: |
-      ((gcp-credentials))
-
 jobs:
 - name: install-opsman
   serial: true
