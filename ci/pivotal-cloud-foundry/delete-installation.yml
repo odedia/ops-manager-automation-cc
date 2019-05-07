@@ -116,5 +116,6 @@ jobs:
       env: config
       state: state
     params:
-      ENV_FILE: config/ops-manager/env.yml
-    - put: state
+      STATE_FILE: state.yml
+      OPSMAN_CONFIG_FILE: config/ops-manager/2.5/gcp/config-vm.yml
+  - put: state
