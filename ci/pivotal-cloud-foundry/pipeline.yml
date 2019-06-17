@@ -99,7 +99,7 @@ resources:
 - name: scs-stemcell
   type: gcs
   source:
-    regexp: rabbitmq-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    regexp: scs-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
