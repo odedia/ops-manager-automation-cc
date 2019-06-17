@@ -20,7 +20,6 @@ resources:
   source:
     uri: ((config-uri))
     branch: master
-
 - name: platform-automation-pivnet
   type: pivnet
   source:
