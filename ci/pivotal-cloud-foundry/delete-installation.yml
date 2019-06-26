@@ -44,7 +44,6 @@ resources:
       ((gcp-credentials))
 
 jobs:
-
 - name: delete-installation
   serial: true
   plan:
