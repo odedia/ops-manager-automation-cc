@@ -20,10 +20,12 @@ product-properties:
     - name: certificate
       certificate:
         cert_pem: ((domain-crt))
+        private_key_pem: ((domain-key))
   .properties.metric_registrar_enabled:
     value: true
   .properties.metric_registrar_scrape_interval_in_seconds:
-    value: private_key_pem: ((domain-key))
+    value: 15
+   
   .properties.haproxy_forward_tls:
     value: disable
   .ha_proxy.skip_cert_verify:
