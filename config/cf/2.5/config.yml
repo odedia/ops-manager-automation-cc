@@ -23,7 +23,7 @@ product-properties:
   .properties.metric_registrar_enabled:
     value: true
   .properties.metric_registrar_scrape_interval_in_seconds:
-    value: 15        private_key_pem: ((domain-key))
+    value: private_key_pem: ((domain-key))
   .properties.haproxy_forward_tls:
     value: disable
   .ha_proxy.skip_cert_verify:
