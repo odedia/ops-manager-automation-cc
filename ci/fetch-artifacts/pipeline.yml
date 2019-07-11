@@ -86,7 +86,7 @@ resources:
 - name: scs-product
   type: gcs
   source:
-    regexp: p-spring-cloud-services-2(.*).pivotal
+    regexp: p-spring-cloud-services-(.*).pivotal
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
@@ -102,7 +102,7 @@ resources:
 - name: scs3-product
   type: gcs
   source:
-    regexp: p-spring-cloud-services-3(.*).pivotal
+    regexp: p_spring-cloud-services-(.*).pivotal
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
