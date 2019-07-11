@@ -1,0 +1,50 @@
+product-name: p-spring-cloud-services
+product-properties:
+  .deploy-service-broker.broker_max_instances:
+    value: 100
+  .deploy-service-broker.disable_cert_check:
+    value: true 
+  .deploy-service-broker.secure_credentials:
+    value: false
+  .register-service-broker.enable_global_access:
+    value: true
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: ((az1))
+  - name: ((az2))
+  - name: ((az3))
+  singleton_availability_zone:
+    name: ((az1))
+resource-config:
+  deploy-service-broker:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  destroy-service-broker:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  register-service-broker:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+  run-smoke-tests:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: true
+errand-config:
+  deploy-service-broker:
+    post-deploy-state: true
+  destroy-service-broker:
+    pre-delete-state: true
+  register-service-broker:
+    post-deploy-state: true
+  run-smoke-tests:
+    post-deploy-state: true
+

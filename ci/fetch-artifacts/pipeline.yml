@@ -86,7 +86,7 @@ resources:
 - name: scs-product
   type: gcs
   source:
-    regexp: p-spring-cloud-services-(.*).pivotal
+    regexp: p-spring-cloud-services-2(.*).pivotal
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
@@ -98,6 +98,23 @@ resources:
     bucket: ((gcs-bucket))
     json_key: |
       ((gcp-credentials))
+
+- name: scs3-product
+  type: gcs
+  source:
+    regexp: p-spring-cloud-services-3(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: scs3-stemcell
+  type: gcs
+  source:
+    regexp: scs3-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
 
 - name: redis-product
   type: gcs
@@ -596,6 +613,49 @@ jobs:
     - put: scs-stemcell
       params:
         file: scs-stemcell/*.tgz
+
+
+- name: fetch-scs3
+  serial_groups: [ fetch-tiles-1 ]
+  plan:
+  - aggregate:
+    - get: every-two-days
+      trigger: true
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: download-scs-product-and-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/download-product.yml
+    params:
+      CONFIG_FILE: config/p-scs/3.0/config-pivnet.yml
+    output_mapping: {downloaded-stemcell: scs3-stemcell}
+  - aggregate:
+    - put: scs-product
+      params:
+        file: downloaded-product/*.pivotal
+    - put: scs3-stemcell
+      params:
+        file: scs3-stemcell/*.tgz
+
 
 - name: fetch-pasw
   serial_groups: [ fetch-tiles-2 ]
