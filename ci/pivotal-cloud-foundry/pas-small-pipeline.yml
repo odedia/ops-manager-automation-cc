@@ -88,6 +88,22 @@ resources:
     json_key: |
       ((gcp-credentials))
 
+- name: scs-product
+  type: gcs
+  source:
+    regexp: p-spring-cloud-services-(.*).pivotal
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
+- name: scs-stemcell
+  type: gcs
+  source:
+    regexp: scs-stemcell/light-bosh-stemcell-(.*)-google.*\.tgz
+    bucket: ((gcs-bucket))
+    json_key: |
+      ((gcp-credentials))
+
 
 - name: platform-automation-tasks
   type: gcs
@@ -436,6 +452,53 @@ jobs:
     params:
       ENV_FILE: config/ops-manager/env.yml
 
+- name: upload-and-stage-scs
+  serial: true
+  serial_groups: [ tile-uploads ]
+  plan:
+  - aggregate:
+    - get: platform-automation-image
+      params:
+        unpack: true
+      passed:
+        - upgrade-opsman
+      trigger: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: scs-product
+      trigger: true
+    - get: config
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: upload-product
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/upload-product.yml
+    input_mapping:
+      product: scs-product
+      env: config
+    params:
+      ENV_FILE: config/ops-manager/env.yml
+  - task: stage-product
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/stage-product.yml
+    input_mapping:
+      product: scs-product
+      env: config
+    params:
+      ENV_FILE: config/ops-manager/env.yml
 
 # CONFIGURARTIONS
 
@@ -571,6 +634,49 @@ jobs:
       CONFIG_FILE: config/pivotal-mysql/2.5/config.yml
       ENV_FILE: config/ops-manager/env.yml
 
+- name: configure-scs
+  serial: true
+  serial_groups: [ staged-config ]
+  plan:
+  - aggregate:
+    - get: platform-automation-image
+      params:
+        unpack: true
+      passed:
+        - upload-and-stage-scs
+      trigger: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+    - get: config
+    - get: scs-product
+      passed:
+        - upload-and-stage-scs
+      trigger: true
+  - task: credhub-interpolate-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CA_CERT: ((credhub-ca-cert))
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      PREFIX: /
+      INTERPOLATION_PATH: config
+    input_mapping:
+      files: config
+    output_mapping:
+      interpolated-files: config
+  - task: configure-scs
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/configure-product.yml
+    input_mapping:
+      config: config
+      env: config
+      vars: config
+    params:
+      CONFIG_FILE: config/p-scs/2.0/config.yml
+      ENV_FILE: config/ops-manager/env.yml
 
 - name: upload-stemcells
   serial: true
@@ -584,6 +690,7 @@ jobs:
         - configure-pas
         - configure-mysql
         - configure-rabbitmq
+        - configure-scs
       trigger: true
     - get: platform-automation-tasks
       params:
@@ -593,6 +700,8 @@ jobs:
     - get: rabbitmq-stemcell
       trigger: true
     - get: mysql-stemcell
+      trigger: true
+    - get: scs-stemcell
       trigger: true
     - get: config
   - task: credhub-interpolate-config
@@ -633,6 +742,14 @@ jobs:
       stemcell: mysql-stemcell
     params:
       ENV_FILE: config/ops-manager/env.yml
+  - task: upload-scs-stemcell
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/upload-stemcell.yml
+    input_mapping:
+      env: config
+      stemcell: scs-stemcell
+    params:
+      ENV_FILE: config/ops-manager/env.yml
 
 - name: apply-product-changes
   serial: true
@@ -645,6 +762,7 @@ jobs:
         - configure-pas
         - configure-mysql
         - configure-rabbitmq
+        - configure-scs
         - upload-stemcells
       trigger: true
     - get: platform-automation-tasks
