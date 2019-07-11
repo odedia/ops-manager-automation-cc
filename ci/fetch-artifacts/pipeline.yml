@@ -649,7 +649,7 @@ jobs:
       CONFIG_FILE: config/p-scs/3.0/config-pivnet.yml
     output_mapping: {downloaded-stemcell: scs3-stemcell}
   - aggregate:
-    - put: scs-product
+    - put: scs3-product
       params:
         file: downloaded-product/*.pivotal
     - put: scs3-stemcell
