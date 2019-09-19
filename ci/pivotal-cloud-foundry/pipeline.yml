@@ -741,22 +741,22 @@ jobs:
       files: config
     output_mapping:
       interpolated-files: config
-  - task: upload-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/upload-product.yml
-    input_mapping:
-      product: redis-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
-  - task: stage-product
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/stage-product.yml
-    input_mapping:
-      product: redis-product
-      env: config
-    params:
-      ENV_FILE: config/ops-manager/env.yml
+# - task: upload-product
+#   image: platform-automation-image
+#    file: platform-automation-tasks/tasks/upload-product.yml
+#    input_mapping:
+#      product: redis-product
+#      env: config
+#    params:
+#      ENV_FILE: config/ops-manager/env.yml
+#  - task: stage-product
+#    image: platform-automation-image
+#    file: platform-automation-tasks/tasks/stage-product.yml
+#    input_mapping:
+#      product: redis-product
+#      env: config
+#    params:
+#      ENV_FILE: config/ops-manager/env.yml
 
 
 - name: upload-and-stage-scs
