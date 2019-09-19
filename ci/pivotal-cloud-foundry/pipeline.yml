@@ -1252,16 +1252,16 @@ jobs:
       files: config
     output_mapping:
       interpolated-files: config
-  - task: configure-redis
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/configure-product.yml
-    input_mapping:
-      config: config
-      env: config
-      vars: config
-    params:
-      CONFIG_FILE: config/p-redis/2.0/config.yml
-      ENV_FILE: config/ops-manager/env.yml
+#  - task: configure-redis
+#    image: platform-automation-image
+#   file: platform-automation-tasks/tasks/configure-product.yml
+#    input_mapping:
+#      config: config
+#      env: config
+#      vars: config
+#    params:
+#      CONFIG_FILE: config/p-redis/2.0/config.yml
+#      ENV_FILE: config/ops-manager/env.yml
 
 
 - name: configure-scs
