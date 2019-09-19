@@ -741,8 +741,8 @@ jobs:
       files: config
     output_mapping:
       interpolated-files: config
- - task: upload-product
-   image: platform-automation-image
+  - task: upload-product
+    image: platform-automation-image
     file: platform-automation-tasks/tasks/upload-product.yml
     input_mapping:
       product: redis-product
