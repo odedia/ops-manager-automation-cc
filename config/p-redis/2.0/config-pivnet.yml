@@ -2,5 +2,5 @@
 pivnet-api-token: ((pivnet-api-token))
 pivnet-file-glob: p-redis-*.pivotal
 pivnet-product-slug: p-redis
-product-version-regex: 2\.2\.(.*)
+product-version-regex: 2\.0\.(.*)
 stemcell-iaas: google
