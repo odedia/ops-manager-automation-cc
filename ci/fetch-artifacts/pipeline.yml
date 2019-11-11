@@ -327,7 +327,7 @@ jobs:
 
 
 - name: fetch-harbor
-  serial_groups: [ fetch-tiles ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -450,7 +450,7 @@ jobs:
         file: healthwatch-stemcell/*.tgz
 
 - name: fetch-jenkins
-  serial_groups: [ fetch-tiles-1 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -492,7 +492,7 @@ jobs:
 
 
 - name: fetch-redis
-  serial_groups: [ fetch-tiles-2 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -533,7 +533,7 @@ jobs:
         file: redis-stemcell/*.tgz
 
 - name: fetch-rabbitmq
-  serial_groups: [ fetch-tiles-3 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -574,7 +574,7 @@ jobs:
         file: rabbitmq-stemcell/*.tgz
 
 - name: fetch-scs
-  serial_groups: [ fetch-tiles-1 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -616,7 +616,7 @@ jobs:
 
 
 - name: fetch-scs3
-  serial_groups: [ fetch-tiles-1 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -658,7 +658,7 @@ jobs:
 
 
 - name: fetch-pasw
-  serial_groups: [ fetch-tiles-2 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -699,7 +699,7 @@ jobs:
         file: pasw-stemcell/*.tgz
 
 - name: fetch-pcfmetrics
-  serial_groups: [ fetch-tiles-3 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days
@@ -740,7 +740,7 @@ jobs:
         file: pcfmetrics-stemcell/*.tgz
 
 - name: fetch-mysql
-  serial_groups: [ fetch-tiles-1 ]
+  serial_groups: [ fetch-ops ]
   plan:
   - aggregate:
     - get: every-two-days

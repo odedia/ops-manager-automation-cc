@@ -423,7 +423,7 @@ jobs:
 
 - name: upload-and-stage-pks
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -471,7 +471,7 @@ jobs:
 
 - name: upload-and-stage-harbor
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -519,7 +519,7 @@ jobs:
 
 - name: upload-and-stage-pas
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -567,7 +567,7 @@ jobs:
 
 - name: upload-and-stage-healthwatch
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -615,7 +615,7 @@ jobs:
 
 - name: upload-and-stage-jenkins
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -663,7 +663,7 @@ jobs:
 
 - name: upload-and-stage-rabbitmq
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -712,7 +712,7 @@ jobs:
 
 - name: upload-and-stage-redis
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -761,7 +761,7 @@ jobs:
 
 - name: upload-and-stage-scs
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -809,7 +809,7 @@ jobs:
 
 - name: upload-and-stage-pasw
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -857,7 +857,7 @@ jobs:
 
 - name: upload-and-stage-pcfmetrics
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -906,7 +906,7 @@ jobs:
 
 - name: upload-and-stage-mysql
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -957,7 +957,7 @@ jobs:
 
 - name: configure-pks
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1001,7 +1001,7 @@ jobs:
 
 - name: configure-harbor
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1044,7 +1044,7 @@ jobs:
       ENV_FILE: config/ops-manager/env.yml
 
 - name: configure-pas
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   serial: true
   plan:
   - aggregate:
@@ -1088,7 +1088,7 @@ jobs:
       ENV_FILE: config/ops-manager/env.yml
 
 - name: configure-healthwatch
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   serial: true
   plan:
   - aggregate:
@@ -1133,7 +1133,7 @@ jobs:
 
 - name: configure-jenkins
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1177,7 +1177,7 @@ jobs:
 
 - name: configure-rabbitmq
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1221,7 +1221,7 @@ jobs:
 
 - name: configure-redis
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1266,7 +1266,7 @@ jobs:
 
 - name: configure-scs
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1310,7 +1310,7 @@ jobs:
 
 - name: configure-pasw
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1354,7 +1354,7 @@ jobs:
 
 - name: configure-pcfmetrics
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -1399,7 +1399,7 @@ jobs:
 
 - name: configure-mysql
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
