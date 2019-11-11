@@ -325,7 +325,7 @@ jobs:
 
 - name: upload-and-stage-pas
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -373,7 +373,7 @@ jobs:
 
 - name: upload-and-stage-rabbitmq
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -421,7 +421,7 @@ jobs:
 
 - name: upload-and-stage-mysql
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -469,7 +469,7 @@ jobs:
 
 - name: upload-and-stage-scs
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -517,7 +517,7 @@ jobs:
 
 - name: upload-and-stage-scs3
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -567,7 +567,7 @@ jobs:
 # CONFIGURARTIONS
 
 - name: configure-pas
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   serial: true
   plan:
   - aggregate:
@@ -612,7 +612,7 @@ jobs:
 
 - name: configure-rabbitmq
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -656,7 +656,7 @@ jobs:
 
 - name: configure-mysql
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -700,7 +700,7 @@ jobs:
 
 - name: configure-scs
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -745,7 +745,7 @@ jobs:
 
 - name: configure-scs3
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
