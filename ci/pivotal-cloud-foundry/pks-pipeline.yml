@@ -278,7 +278,7 @@ jobs:
 
 - name: upload-and-stage-pks
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -326,7 +326,7 @@ jobs:
 
 - name: upload-and-stage-harbor
   serial: true
-  serial_groups: [ tile-uploads ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -379,7 +379,7 @@ jobs:
 
 - name: configure-pks
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
@@ -423,7 +423,7 @@ jobs:
 
 - name: configure-harbor
   serial: true
-  serial_groups: [ staged-config ]
+  serial_groups: [ install ]
   plan:
   - aggregate:
     - get: platform-automation-image
