@@ -1,0 +1,15 @@
+---
+opsman-configuration:
+  gcp:
+    gcp_service_account: ((gcp-credentials))
+    project: ((gcp-project-id))
+    region: ((region))
+    zone: ((region))-a
+    vm_name: ops-manager-vm
+    vpc_subnet: ((subdomain-name))-infrastructure-subnet
+    tags: ((subdomain-name))-ops-manager-external
+    custom_cpu: 2
+    custom_memory: 8
+    boot_disk_size: 200
+    public_ip: ((opsman-public-ip))
+    private_ip: 10.0.0.2

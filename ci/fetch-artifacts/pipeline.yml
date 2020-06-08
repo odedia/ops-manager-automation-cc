@@ -278,7 +278,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/ops-manager/2.5/gcp/config-pivnet.yml
+      CONFIG_FILE: config/ops-manager/2.9/gcp/config-pivnet.yml
   - aggregate:
     - put: opsman-product
       params:
@@ -398,7 +398,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/cf/2.5/config-pivnet.yml
+      CONFIG_FILE: config/cf/2.9/config-pivnet.yml
     output_mapping: {downloaded-stemcell: pas-stemcell}
   - aggregate:
     - put: pas-product

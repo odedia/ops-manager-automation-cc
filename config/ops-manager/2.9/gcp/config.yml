@@ -1,0 +1,88 @@
+---
+az-configuration:
+- name: ((az1))
+- name: ((az2))
+- name: ((az3))
+network-assignment:
+  network:
+    name: infrastructure
+  singleton_availability_zone:
+    name: ((region))-a
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: infrastructure
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-infrastructure-subnet/((region))
+      cidr: 10.0.0.0/26
+      dns: 169.254.169.254
+      gateway: 10.0.0.1
+      reserved_ip_ranges: 10.0.0.1-10.0.0.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: pks
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-subnet/((region))
+      cidr: 10.0.10.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.10.1
+      reserved_ip_ranges: 10.0.10.1-10.0.10.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: pks-services
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pks-services-subnet/((region))
+      cidr: 10.0.11.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.11.1
+      reserved_ip_ranges: 10.0.11.1-10.0.11.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: pas
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-pas-subnet/((region))
+      cidr: 10.0.4.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.4.1
+      reserved_ip_ranges: 10.0.4.1-10.0.4.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+  - name: services
+    subnets:
+    - iaas_identifier: ((subdomain-name))-pcf-network/((subdomain-name))-services-subnet/((region))
+      cidr: 10.0.8.0/24
+      dns: 169.254.169.254
+      gateway: 10.0.8.1
+      reserved_ip_ranges: 10.0.8.1-10.0.8.9
+      availability_zone_names:
+      - ((az1))
+      - ((az2))
+      - ((az3))
+properties-configuration:
+  director_configuration:
+    ntp_servers_string: metadata.google.internal
+    post_deploy_enabled: true
+    resurrector_enabled: true
+    retry_bosh_deploys: false
+  iaas_configuration:
+    project: ((gcp-project-id))
+    default_deployment_tag: ((subdomain-name))
+    auth_json: ((gcp-credentials))
+  security_configuration:
+    trusted_certificates: ((domain-crt))
+    generate_vm_passwords: true
+    opsmanager_root_ca_trusted_certs: false
+resource-configuration:
+  compilation:
+    instances: 8
+    instance_type:
+      id: large.disk
+
