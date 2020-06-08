@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: harbor-container-registry-*.pivotal
+pivnet-product-slug: harbor-container-registry
+product-version-regex: 1\.10\.(.*)
+stemcell-iaas: google
