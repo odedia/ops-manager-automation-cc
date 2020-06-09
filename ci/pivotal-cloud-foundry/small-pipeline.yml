@@ -742,7 +742,7 @@ jobs:
       env: config
       vars: config
     params:
-      CONFIG_FILE: config/p-rabbitmq/1.16/config.yml
+      CONFIG_FILE: config/p-rabbitmq/1.19/config.yml
       ENV_FILE: config/ops-manager/env.yml
 
 - name: configure-mysql
