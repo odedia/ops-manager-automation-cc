@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: srt-*.pivotal
+pivnet-product-slug: cf
+product-version-regex: 2\.9\.4
+stemcell-iaas: google
