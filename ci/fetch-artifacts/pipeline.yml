@@ -315,7 +315,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/download-product.yml
     params:
-      CONFIG_FILE: config/pivotal-container-service/1.4/config-pivnet.yml
+      CONFIG_FILE: config/pivotal-container-service/1.7/config-pivnet.yml
     output_mapping: {downloaded-stemcell: pks-stemcell}
   - aggregate:
     - put: pks-product
